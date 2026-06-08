@@ -1,8 +1,11 @@
+/* ==========================================================================
+   1. CONFIGURACIÓN GENERAL Y RESET
+   ========================================================================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Arial Round', 'Comic Sans MS', sans-serif;
+    font-family: 'Arial Rounded MT Bold', 'Comic Sans MS', sans-serif;
 }
 
 body {
@@ -11,17 +14,19 @@ body {
     align-items: center;
     min-height: 100vh;
     background: #87CEEB;
+    padding: 20px;
 }
 
+/* ==========================================================================
+   2. CONTENEDOR PRINCIPAL (ESTILO PC)
+   ========================================================================== */
 .game-container {
     width: 100%;
     max-width: 1400px;
     height: 85vh;
     min-height: 550px;
-
     background: url('../imagenes/fonditointro.png') no-repeat center;
     background-size: cover;
-
     border: 8px solid #fff;
     border-radius: 24px;
     display: flex;
@@ -29,15 +34,17 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 30px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
 
 .header-title {
     color: white;
     font-size: 3rem;
-    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    text-align: center;
 }
 
-/* --- NUEVO: Contenedor medio para alinear perrito y pergamino --- */
+/* Contenedor medio para alinear perrito y pergamino */
 .game-content {
     display: flex;
     width: 90%;
@@ -45,10 +52,9 @@ body {
     justify-content: center;
     align-items: center;
     gap: 40px;
-    /* Separación entre el perro y el pergamino */
 }
 
-/* NUEVO: Ajustes y animación para el perrito */
+/* Ajustes y animación para el perrito */
 .ecopet-avatar {
     max-height: 100%;
     width: auto;
@@ -56,13 +62,11 @@ body {
     animation: float-dog 3.5s ease-in-out infinite;
 }
 
-/* El Pergamino (Ajustado para convivir con el perrito) */
+/* El Pergamino */
 .scroll-container {
     background: #fbf0d9;
     width: 55%;
-    /* Bajó de 70% a 55% para dar espacio al perrito */
     height: 100%;
-    /* Toma la altura disponible del game-content */
     border-radius: 8px;
     border-left: 15px solid #d8b467;
     border-right: 15px solid #d8b467;
@@ -76,6 +80,7 @@ body {
 .scroll-content {
     text-align: center;
     color: #2c3e50;
+    width: 100%;
 }
 
 .scroll-content h3 {
@@ -108,23 +113,24 @@ body {
     margin-top: 15px;
 }
 
+/* Botón Iniciar */
 .btn-iniciar {
     background-color: #4cd137;
     color: white;
     font-size: 1.8rem;
     font-weight: bold;
-    padding: 10px 60px;
+    padding: 12px 60px;
     border-radius: 50px;
     border: 4px solid #fff;
     text-decoration: none;
-    box-shadow: 0 6px 0 #2c9c1b;
+    box-shadow: 0 6px 0 #2c9c1b, 0 8px 15px rgba(0, 0, 0, 0.2);
     transition: transform 0.1s, box-shadow 0.1s;
+    text-align: center;
 }
 
-/* Opcional: Pequeña animación al botón para que combine con la primera pantalla */
 .btn-iniciar:hover {
     transform: translateY(2px);
-    box-shadow: 0 4px 0 #2c9c1b;
+    box-shadow: 0 4px 0 #2c9c1b, 0 6px 10px rgba(0, 0, 0, 0.2);
 }
 
 .btn-iniciar:active {
@@ -132,7 +138,93 @@ body {
     box-shadow: none;
 }
 
-/* --- ANIMACIONES --- */
+/* ==========================================================================
+   3. ADAPTACIÓN MÉTRICA PARA CELULARES
+   ========================================================================== */
+@media (max-width: 768px) {
+    body {
+        padding: 8px;
+        overflow-y: auto;
+        /* Permite scroll cómodo si el dispositivo móvil es muy pequeño */
+    }
+
+    .game-container {
+        height: auto;
+        min-height: calc(100vh - 16px);
+        padding: 20px 12px;
+        border: 5px solid #fff;
+        justify-content: flex-start;
+        gap: 15px;
+    }
+
+    .header-title {
+        font-size: 2rem;
+    }
+
+    /* Transformación a columna vertical */
+    .game-content {
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+        gap: 15px;
+    }
+
+    /* Redimensionamiento proporcional del avatar */
+    .ecopet-avatar {
+        max-height: 130px;
+        width: auto;
+    }
+
+    /* El pergamino toma todo el ancho y se ajusta a su contenido */
+    .scroll-container {
+        width: 100%;
+        height: auto;
+        padding: 15px 10px;
+        border-left: 10px solid #d8b467;
+        border-right: 10px solid #d8b467;
+    }
+
+    /* Escalado tipográfico responsivo infantil */
+    .scroll-content h3 {
+        font-size: 1.1rem;
+    }
+
+    .challenge-text {
+        font-size: 1.25rem;
+        margin: 6px 0;
+    }
+
+    .divider {
+        margin: 10px 0;
+    }
+
+    .reward-text {
+        font-size: 1.1rem;
+        margin: 6px 0;
+    }
+
+    .encouragement {
+        font-size: 0.95rem;
+        margin-top: 10px;
+    }
+
+    /* Adaptación del botón para toques fáciles en pantallas táctiles */
+    .btn-iniciar {
+        font-size: 1.4rem;
+        padding: 10px 0;
+        width: 100%;
+        max-width: 280px;
+        box-shadow: 0 4px 0 #2c9c1b, 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-iniciar:active {
+        transform: translateY(4px);
+    }
+}
+
+/* ==========================================================================
+   4. ANIMACIONES
+   ========================================================================== */
 @keyframes float-dog {
 
     0%,
@@ -141,7 +233,6 @@ body {
     }
 
     50% {
-        transform: translateY(-15px);
-        /* Movimiento flotante */
+        transform: translateY(-12px);
     }
 }

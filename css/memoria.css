@@ -5,7 +5,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Arial Round', 'Comic Sans MS', sans-serif;
+    font-family: 'Arial Rounded MT Bold', 'Comic Sans MS', sans-serif;
 }
 
 body {
@@ -48,7 +48,8 @@ body {
     background: rgba(255, 255, 255, 0.9);
     padding: 12px 30px;
     border-radius: 20px;
-    box-shadow: 0 6px 0 rgba(0,0,0,0.05);
+    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.05);
+    z-index: 5;
 }
 
 .title-block {
@@ -68,6 +69,7 @@ body {
     box-shadow: 0 4px 0 #c0392b;
     font-size: 1.1rem;
     transition: transform 0.1s, box-shadow 0.1s;
+    white-space: nowrap;
 }
 
 .btn-back:hover {
@@ -94,7 +96,8 @@ body {
     font-weight: bold;
     padding: 8px 25px;
     border-radius: 50px;
-    box-shadow: inset 0 -4px 0 rgba(0,0,0,0.2), 0 4px 10px rgba(0,236,185,0.3);
+    box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.2), 0 4px 10px rgba(0, 236, 185, 0.3);
+    white-space: nowrap;
 }
 
 /* ==========================================================================
@@ -108,18 +111,17 @@ body {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 1fr);
     gap: 12px;
-    perspective: 1000px; /* Brinda el efecto de profundidad 3D */
+    perspective: 1000px;
     transition: opacity 0.5s ease;
 }
 
-/* Estructura de la Carta */
 .memory-card {
     position: relative;
     background-color: transparent;
     cursor: pointer;
     transform-style: preserve-3d;
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 16px;
 }
 
@@ -128,27 +130,25 @@ body {
     transition: transform 0.1s;
 }
 
-/* Efecto de Rotación al Voltear */
 .memory-card.flip {
     transform: rotateY(180deg);
 }
 
-/* Caras de la Carta */
-.front-face, .back-face {
+.front-face,
+.back-face {
     position: absolute;
     width: 100%;
     height: 100%;
     padding: 10px;
     border-radius: 16px;
     border: 4px solid #fff;
-    backface-visibility: hidden; /* Oculta la cara trasera al girar */
+    backface-visibility: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     user-select: none;
 }
 
-/* Cara Frontal (Oculta por defecto, muestra el residuo) */
 .front-face {
     background: #fff;
     font-size: 3rem;
@@ -156,7 +156,6 @@ body {
     box-shadow: inset 0 -6px 0 #e2edf7;
 }
 
-/* Cara Trasera (Visible por defecto, huella de EcoPet) */
 .back-face {
     background: #ff9d00;
     color: white;
@@ -169,7 +168,7 @@ body {
    ========================================================================== */
 .character-zone {
     position: absolute;
-    bottom: 110px;
+    bottom: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -187,7 +186,7 @@ body {
 }
 
 .ecopet-avatar-win {
-    width: 170px;
+    width: 150px;
     height: auto;
     object-fit: contain;
     animation: float-dog 2.5s ease-in-out infinite;
@@ -198,13 +197,13 @@ body {
     border: 4px solid #4cd137;
     padding: 12px 20px;
     border-radius: 20px;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: bold;
     color: #1d3557;
     position: relative;
     margin-bottom: 15px;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    max-width: 320px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    max-width: 280px;
     text-align: center;
 }
 
@@ -246,28 +245,149 @@ body {
     box-shadow: none;
 }
 
-/* Botón especial que reemplaza al reiniciar cuando ganas */
 .btn-ready-win {
     background-color: #4cd137;
     color: white;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: bold;
-    padding: 14px 60px;
+    padding: 12px 50px;
     border-radius: 50px;
     border: 4px solid #fff;
-    box-shadow: 0 8px 0 #359824, 0 12px 20px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 6px 0 #359824, 0 10px 15px rgba(0, 0, 0, 0.25);
     cursor: pointer;
     z-index: 11;
     animation: pulse 1.5s infinite;
 }
 
-/* Animaciones */
+/* ==========================================================================
+   6. RESPONSIVIDAD EXCLUSIVA CELULARES (AJUSTE QUIRÚRGICO)
+   ========================================================================== */
+@media (max-width: 768px) {
+    body {
+        padding: 5px;
+    }
+
+    .game-container {
+        height: calc(100vh - 10px);
+        min-height: auto;
+        padding: 15px 12px;
+        border: 4px solid #fff;
+        border-radius: 16px;
+    }
+
+    /* Reducción compacta de la barra de estado superior */
+    .top-bar {
+        padding: 8px 12px;
+        border-radius: 14px;
+        gap: 5px;
+    }
+
+    .title-block {
+        gap: 8px;
+    }
+
+    .btn-back {
+        font-size: 0.9rem;
+        padding: 5px 12px;
+        border: 2px solid #fff;
+    }
+
+    .top-bar h2 {
+        font-size: 1.1rem;
+    }
+
+    .stats-box {
+        font-size: 0.9rem;
+        padding: 6px 14px;
+    }
+
+    /* Ajuste elástico del grid de memoria para pantallas estrechas */
+    .memory-grid {
+        max-width: 100%;
+        height: 60%;
+        /* Toma la mayor cantidad de pantalla vertical libre */
+        gap: 6px;
+        /* Reducción de separación para ganar espacio de renderizado */
+    }
+
+    .memory-card {
+        border-radius: 10px;
+    }
+
+    .front-face,
+    .back-face {
+        border: 2px solid #fff;
+        border-radius: 10px;
+        padding: 4px;
+    }
+
+    /* Escalado tipográfico y tamaño de emojis para evitar desbordes al voltear */
+    .front-face {
+        font-size: 1.9rem;
+        box-shadow: inset 0 -3px 0 #e2edf7;
+    }
+
+    .back-face {
+        font-size: 1.5rem;
+        box-shadow: inset 0 -3px 0 #d38100;
+    }
+
+    /* Perro de la victoria adaptado */
+    .character-zone {
+        bottom: 70px;
+    }
+
+    .ecopet-avatar-win {
+        width: 90px;
+    }
+
+    .win-bubble {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+        max-width: 220px;
+    }
+
+    /* Botoneras elásticas de control táctil */
+    .btn-refresh {
+        font-size: 1.2rem;
+        padding: 10px 0;
+        width: 100%;
+        max-width: 240px;
+        box-shadow: 0 4px 0 #2c3e50;
+    }
+
+    .btn-ready-win {
+        font-size: 1.2rem;
+        padding: 10px 0;
+        width: 100%;
+        max-width: 240px;
+        box-shadow: 0 4px 0 #359824;
+    }
+}
+
+/* ==========================================================================
+   7. KEYFRAMES DE ANIMACIÓN
+   ========================================================================== */
 @keyframes float-dog {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.04); }
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.04);
+    }
 }
