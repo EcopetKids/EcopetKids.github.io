@@ -25,7 +25,7 @@
 
             <div class="draggable-zone">
                 <div id="objeto-reciclable" class="item-objeto" draggable="true"></div>
-                <p class="indicador" id="nombre-objeto">¡ARRÁSTRALO!</p>
+                <p class="indicador" id="nombre-objeto">¡ARRÁSTRALO O TÓCALO!</p>
 
                 <button id="btn-reintentar" class="btn-reiniciar" style="display: none;" onclick="reiniciarJuego()">
                     🔄 Intentar de nuevo
@@ -39,41 +39,35 @@
         <div class="bins-container">
             <div class="bin bin-azul" data-target="papel">
                 <div class="bin-image-container">
-                    <img src="../imagenes/papel_carton.png" alt="Papel y Cartón" class="bin-img"
-                        style="width: 50px; height: auto; display: block; margin: 0 auto 5px;">
+                    <img src="../imagenes/papel_carton.png" alt="Papel y Cartón" class="bin-img">
                 </div>
                 <h3>Papel y Cartón</h3>
             </div>
 
             <div class="bin bin-amarillo" data-target="plastico">
                 <div class="bin-image-container">
-                    <img src="../imagenes/plastico.png" alt="Plástico" class="bin-img"
-                        style="width: 50px; height: auto; display: block; margin: 0 auto 5px;">
+                    <img src="../imagenes/plastico.png" alt="Plástico" class="bin-img">
                 </div>
                 <h3>Plástico</h3>
             </div>
 
             <div class="bin bin-verde" data-target="vidrio">
                 <div class="bin-image-container">
-                    <img src="../imagenes/vidrio.png" alt="Vidrio" class="bin-img"
-                        style="width: 50px; height: auto; display: block; margin: 0 auto 5px;">
+                    <img src="../imagenes/vidrio.png" alt="Vidrio" class="bin-img">
                 </div>
                 <h3>Vidrio</h3>
             </div>
 
             <div class="bin bin-marron" data-target="organico">
                 <div class="bin-image-container">
-                    <img src="../imagenes/organicos.png" alt="Orgánicos" class="bin-img"
-                        style="width: 50px; height: auto; display: block; margin: 0 auto 5px;">
+                    <img src="../imagenes/organicos.png" alt="Orgánicos" class="bin-img">
                 </div>
                 <h3>Orgánicos</h3>
             </div>
         </div>
 
-        <div class="button-container-footer" style="margin-top: 20px; text-align: right;">
-            <a href="menu.html" id="btn-siguiente-pantalla" class="btn-siguiente"
-                style="display: none; text-decoration: none; color: white; background-color: #2b4c7e; padding: 10px 20px; border-radius: 20px; font-weight: bold;">Siguiente
-                Pantalla -></a>
+        <div class="button-container-footer">
+            <a href="menu.html" id="btn-siguiente-pantalla" class="btn-siguiente" style="display: none;">Siguiente Pantalla -></a>
         </div>
     </div>
 
@@ -95,7 +89,6 @@
         const puntosTxt = document.getElementById('puntos');
         const contenedorVidas = document.getElementById('contenedor-vidas');
         const barraProgreso = document.getElementById('barra-progreso');
-        const ecopetImg = document.getElementById('ecopet-emocion');
         const btnReintentar = document.getElementById('btn-reintentar');
         const btnSiguiente = document.getElementById('btn-siguiente-pantalla');
 
@@ -104,14 +97,14 @@
         let aciertos = 0;
         let totalParaGanar = 5;
         let objetoActual = {};
+        let objetoSeleccionadoMovil = false; // Estado de selección para soporte móvil táctil
 
         function cargarNuevoObjeto() {
-            // CONTROL DE VICTORIA
             if (aciertos >= totalParaGanar) {
                 nombreElement.innerText = "¡Misión Cumplida! 🌟";
                 objetoElement.style.display = 'none';
-                btnReintentar.style.display = 'none'; // No se muestra reintentar si gana
-                btnSiguiente.style.display = 'inline-block'; // Se activa el pase de pantalla
+                btnReintentar.style.display = 'none';
+                btnSiguiente.style.display = 'inline-block';
                 return;
             }
 
@@ -121,18 +114,17 @@
             objetoElement.innerText = objetoActual.info.split(' ')[0];
             nombreElement.innerText = objetoActual.info.split(' ').slice(1).join(' ');
             objetoElement.style.display = 'block';
+            objetoElement.classList.remove('selected-item'); // Limpia selección móvil
+            objetoSeleccionadoMovil = false;
             objetoElement.setAttribute('data-tipo', objetoActual.tipo);
 
-            // Estado por defecto en juego continuo
             btnReintentar.style.display = 'none';
             btnSiguiente.style.display = 'none';
         }
 
         function actualizarVidas() {
             let corazones = "";
-            for (let i = 0; i < vidas; i++) {
-                corazones += "❤️ ";
-            }
+            for (let i = 0; i < vidas; i++) { corazones += "❤️ "; }
             if (vidas === 0) corazones = "💀 Juego Terminado";
             contenedorVidas.innerText = corazones;
         }
@@ -147,6 +139,14 @@
             cargarNuevoObjeto();
         }
 
+        /* --- MECÁNICA MÓVIL: SOPORTE DE TOQUES --- */
+        objetoElement.addEventListener('click', () => {
+            if (vidas <= 0 || aciertos >= totalParaGanar) return;
+            objetoSeleccionadoMovil = !objetoSeleccionadoMovil;
+            objetoElement.classList.toggle('selected-item', objetoSeleccionadoMovil);
+        });
+
+        /* --- MECÁNICA ESCRITORIO: DRAG & DROP --- */
         objetoElement.addEventListener('dragstart', (e) => {
             e.dataTransfer.setData('text/plain', e.target.id);
         });
@@ -154,8 +154,8 @@
         botes.forEach(bote => {
             bote.addEventListener('dragover', (e) => e.preventDefault());
 
-            bote.addEventListener('drop', (e) => {
-                e.preventDefault();
+            // Función unificada para validar la respuesta (Drag o Tap)
+            function procesarRespuesta() {
                 if (vidas <= 0 || aciertos >= totalParaGanar) return;
 
                 const tipoBote = bote.getAttribute('data-target');
@@ -169,7 +169,6 @@
                     barraProgreso.style.width = `${porcentaje}%`;
 
                     mostrarPopup('pop-bien');
-
                     objetoElement.style.display = 'none';
                     setTimeout(cargarNuevoObjeto, 1000);
                 } else {
@@ -180,13 +179,25 @@
 
                     mostrarPopup('pop-mal');
 
-                    // CONTROL DE DERROTA
                     if (vidas <= 0) {
                         nombreElement.innerText = "¡Oh no! Inténtalo de nuevo.";
                         objetoElement.style.display = 'none';
-                        btnReintentar.style.display = 'inline-block'; // Solo aparece reintentar
-                        btnSiguiente.style.display = 'none'; // Asegura que "Siguiente" esté oculto
+                        btnReintentar.style.display = 'inline-block';
+                        btnSiguiente.style.display = 'none';
                     }
+                }
+            }
+
+            // Evento al soltar (PC)
+            bote.addEventListener('drop', (e) => {
+                e.preventDefault();
+                procesarRespuesta();
+            });
+
+            // Evento al tocar el bote (Móvil)
+            bote.addEventListener('click', () => {
+                if (objetoSeleccionadoMovil) {
+                    procesarRespuesta();
                 }
             });
         });
