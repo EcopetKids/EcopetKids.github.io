@@ -9,51 +9,63 @@
 }
 
 body {
+    background: #87CEEB;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: #87CEEB;
+    overflow-x: hidden;
     padding: 20px;
 }
 
-/* Contenedor Adaptable en Escritorio (Grid de dos columnas) */
+/* Contenedor Adaptable en Escritorio (Grid de dos columnas con Fondo de Imagen) */
 .game-container {
     width: 100%;
-    max-width: 1024px;
-    height: 576px;
-    background: #20bf6b;
+    max-width: 1200px;
+    /* Amplio para albergar bien el grid */
+    height: 85vh;
+    min-height: 550px;
+    background: url('../imagenes/fondoinicio.png') no-repeat center;
+    background-size: cover;
     border: 8px solid #fff;
     border-radius: 24px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
     display: grid;
     grid-template-columns: 1fr 2fr;
-    gap: 20px;
-    padding: 35px 25px 25px 25px;
-    /* Espaciado extra arriba para el botón home */
+    gap: 24px;
+    padding: 45px 30px 30px 30px;
+    /* Espacio extra arriba para el botón home */
     position: relative;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
 /* ==========================================================================
-   2. COMPONENTES Y PANELES BASE
+   2. COMPONENTES Y PANELES BASE (Más transparentes para lucir el fondo)
    ========================================================================== */
 .panel {
-    background: white;
+    background: rgba(255, 255, 255, 0.75);
+    /* Cuadros más transparentes */
+    backdrop-filter: blur(6px);
+    /* Mayor desenfoque para no perder legibilidad */
+    -webkit-backdrop-filter: blur(6px);
+    /* Soporte para Safari */
     border-radius: 20px;
-    padding: 20px;
+    padding: 25px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: 0 8px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    /* Borde brillante sutil */
 }
 
 .panel h2 {
     color: white;
-    padding: 5px 30px;
+    padding: 6px 30px;
     border-radius: 15px;
     margin-bottom: 20px;
-    font-size: 1.5rem;
-    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+    font-size: calc(1.1rem + 0.4vw);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .panel-logros h2 {
@@ -73,18 +85,22 @@ body {
 
 .stat-box p {
     font-weight: bold;
-    color: #7f8c8d;
-    margin-bottom: 5px;
+    color: #2c3e50;
+    /* Color un poco más oscuro para contrastar con la transparencia */
+    margin-bottom: 8px;
+    font-size: 1.1rem;
 }
 
 .badge {
-    background: #f1f2f6;
-    padding: 10px;
+    background: rgba(241, 242, 246, 0.9);
+    /* Ligeramente transparente */
+    padding: 12px;
     border-radius: 30px;
     font-size: 1.3rem;
     font-weight: bold;
     color: #2f3542;
-    border: 2px solid #ced6e0;
+    border: 3px solid #ced6e0;
+    box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.05);
 }
 
 /* Sección Tienda */
@@ -97,40 +113,53 @@ body {
 }
 
 .shop-item {
-    border: 3px solid #f1f2f6;
-    border-radius: 15px;
-    padding: 10px;
+    border: 3px solid rgba(226, 232, 240, 0.8);
+    border-radius: 18px;
+    padding: 12px;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    background: #fafafa;
+    background: rgba(255, 255, 255, 0.9);
+    /* Tarjetas internas más sólidas para destacar el ítem */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+}
+
+.shop-item:hover {
+    transform: scale(1.03);
 }
 
 .shop-item h4 {
-    color: #576574;
-    font-size: 0.9rem;
+    color: #334155;
+    font-size: 0.95rem;
 }
 
 .item-img {
     font-size: 3rem;
     margin: 10px 0;
     user-select: none;
+    animation: micro-float 3.5s ease-in-out infinite;
 }
 
-/* Botones Estilo 3D */
+/* Botones Estilo 3D Mejorados */
 .btn-buy {
     background: #ffa502;
     color: white;
     border: none;
-    padding: 8px 15px;
+    padding: 10px 15px;
     border-radius: 15px;
     font-weight: bold;
     cursor: pointer;
     width: 100%;
-    box-shadow: 0 4px 0 #d37a00;
+    box-shadow: 0 4px 0 #d37a00, 0 6px 10px rgba(0, 0, 0, 0.15);
     transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.btn-buy:hover {
+    transform: translateY(1px);
+    box-shadow: 0 3px 0 #d37a00, 0 5px 8px rgba(0, 0, 0, 0.15);
 }
 
 .btn-buy:active {
@@ -139,9 +168,11 @@ body {
 }
 
 .footer-msg {
-    margin-top: 10px;
+    margin-top: 15px;
     font-weight: bold;
-    color: #10ac84;
+    color: #0e8a69;
+    /* Un tono más oscuro para asegurar legibilidad sobre el fondo */
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.9);
 }
 
 /* Botón Home Flotante */
@@ -152,20 +183,25 @@ body {
     font-size: 2rem;
     text-decoration: none;
     background: white;
-    border: 4px solid #20bf6b;
+    border: 4px solid #fff;
     border-radius: 50%;
     width: 55px;
     height: 55px;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     z-index: 10;
-    transition: transform 0.1s;
+    transition: transform 0.1s, background-color 0.2s;
+}
+
+.back-home:hover {
+    background-color: #f8fafc;
 }
 
 .back-home:active {
-    transform: translateY(2px);
+    transform: translateY(3px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* ==========================================================================
@@ -173,85 +209,107 @@ body {
    ========================================================================== */
 @media (max-width: 768px) {
     body {
-        padding: 5px;
+        padding: 10px;
+        align-items: flex-start;
     }
 
     .game-container {
         height: auto;
-        min-height: calc(100vh - 10px);
+        min-height: calc(100vh - 20px);
         grid-template-columns: 1fr;
-        /* Pasa de dos columnas a una sola fila vertical */
+        /* Columna única en vertical */
         gap: 15px;
-        padding: 50px 12px 15px 12px;
-        /* Espacio superior para el botón de home */
-        border: 4px solid #fff;
+        padding: 60px 15px 20px 15px;
+        border: 5px solid #fff;
         border-radius: 16px;
     }
 
     /* Reposicionamiento estético del botón home en celular */
     .back-home {
-        top: 10px;
-        left: 10px;
+        top: 12px;
+        left: 12px;
         width: 45px;
         height: 45px;
         font-size: 1.5rem;
-        border: 3px solid #20bf6b;
     }
 
     .panel {
-        padding: 15px;
+        padding: 18px;
         border-radius: 16px;
+        background: rgba(255, 255, 255, 0.8);
+        /* Ajustado también para móviles */
     }
 
     .panel h2 {
         font-size: 1.2rem;
-        margin-bottom: 12px;
+        margin-bottom: 15px;
         padding: 4px 20px;
     }
 
     /* Reducción elástica de estadísticas */
     .stat-box {
-        margin-bottom: 12px;
+        margin-bottom: 15px;
     }
 
     .stat-box p {
-        font-size: 0.85rem;
+        font-size: 0.9rem;
     }
 
     .badge {
-        font-size: 1.1rem;
-        padding: 6px;
+        font-size: 1.15rem;
+        padding: 8px;
     }
 
-    /* El mercado se redistribuye fluidamente en móvil */
+    /* Mercado fluido adaptado a pantallas pequeñas */
     .items-market {
-        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-        gap: 8px;
+        grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
+        gap: 10px;
     }
 
     .shop-item {
-        padding: 8px 4px;
-        border-radius: 12px;
+        padding: 10px 6px;
+        border-radius: 14px;
     }
 
     .shop-item h4 {
-        font-size: 0.75rem;
-        line-height: 1.1;
+        font-size: 0.8rem;
+        line-height: 1.2;
     }
 
     .item-img {
-        font-size: 2rem;
-        margin: 5px 0;
+        font-size: 2.2rem;
+        margin: 6px 0;
     }
 
     .btn-buy {
-        font-size: 0.85rem;
-        padding: 6px 0;
-        border-radius: 10px;
+        font-size: 0.9rem;
+        padding: 8px 0;
+        border-radius: 12px;
+        box-shadow: 0 3px 0 #d37a00, 0 4px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-buy:active {
+        transform: translateY(3px);
     }
 
     .footer-msg {
-        font-size: 0.85rem;
-        margin-top: 8px;
+        font-size: 0.9rem;
+        margin-top: 10px;
+    }
+}
+
+/* ==========================================================================
+   4. ANIMACIONES
+   ========================================================================== */
+@keyframes micro-float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+        /* Animación sutil para los emojis/items */
     }
 }

@@ -14,49 +14,53 @@ body {
     align-items: center;
     min-height: 100vh;
     background: #87CEEB;
-    overflow: hidden;
-    padding: 20px;
+    overflow-x: hidden;
+    padding: clamp(10px, 2vw, 25px);
 }
 
 /* ==========================================================================
-   2. CONTENEDOR PRINCIPAL (ESCRITORIO PC)
+   2. CONTENEDOR PRINCIPAL UNIVERSAL (PC & LAPTOPS)
    ========================================================================== */
 .game-container {
     width: 100%;
     max-width: 1400px;
     height: 85vh;
-    min-height: 550px;
+    min-height: clamp(520px, 80vh, 900px);
     background: url('../imagenes/fondoinicio.png') no-repeat center;
     background-size: cover;
-    border: 8px solid #fff;
+    border: clamp(4px, 0.8vw, 8px) solid #fff;
     border-radius: 24px;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 40px;
+    padding: clamp(20px, 4vh, 40px) clamp(20px, 3vw, 40px);
     align-items: center;
     position: relative;
+    gap: 15px;
 }
 
 /* ==========================================================================
-   3. ENCABEZADO DEL MENÚ
+   3. ENCABEZADO DEL MENÚ ADAPTATIVO
    ========================================================================== */
 .menu-header {
     text-align: center;
+    width: 100%;
 }
 
 .logo-title {
-    font-size: 5.5rem;
+    /* Crece de forma fluida entre 3rem y 5.5rem según el monitor */
+    font-size: clamp(3rem, 2.2rem + 3.5vw, 5.5rem);
     color: #ff9d00;
     text-shadow: 3px 3px 0 #fff, -3px -3px 0 #fff, 3px -3px 0 #fff, -3px 3px 0 #fff, 0 6px 10px rgba(0, 0, 0, 0.15);
-    letter-spacing: 4px;
+    letter-spacing: clamp(2px, 0.3vw, 4px);
     animation: float 3s ease-in-out infinite;
+    line-height: 1.1;
 }
 
 .menu-subtitle {
     color: #1d3557;
-    font-size: 1.6rem;
+    font-size: clamp(1.1rem, 0.9rem + 0.6vw, 1.6rem);
     font-weight: bold;
     margin-top: 5px;
     text-shadow: 1px 1px 0px white;
@@ -72,7 +76,9 @@ body {
     justify-content: space-around;
     align-items: center;
     flex-grow: 1;
-    margin-top: 20px;
+    /* Absorbe el espacio vertical sobrante con elegancia */
+    margin-top: 10px;
+    gap: 20px;
 }
 
 /* Zona Izquierda: Mascota y diálogo */
@@ -84,7 +90,8 @@ body {
 }
 
 .ecopet-avatar {
-    width: 220px;
+    width: calc(140px + 6vw);
+    max-width: 220px;
     height: auto;
     object-fit: contain;
     animation: float-dog 3.5s ease-in-out infinite;
@@ -95,7 +102,7 @@ body {
     border: 4px solid #ff9d00;
     padding: 12px 20px;
     border-radius: 20px;
-    font-size: 1.2rem;
+    font-size: clamp(0.95rem, 0.85rem + 0.3vw, 1.2rem);
     font-weight: bold;
     color: #1d3557;
     position: relative;
@@ -104,7 +111,7 @@ body {
     text-align: center;
 }
 
-/* Triángulo del bocadillo de texto */
+/* Triángulo del bocadillo de texto original (apunta arriba) */
 .menu-bubble::after {
     content: '';
     position: absolute;
@@ -130,12 +137,12 @@ body {
 }
 
 /* ==========================================================================
-   5. BOTONERA PRINCIPAL REFORZADA
+   5. BOTONERA PRINCIPAL ELÁSTICA
    ========================================================================== */
 .menu-buttons {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: clamp(10px, 1.5vh, 18px);
     width: 100%;
     max-width: 450px;
 }
@@ -145,8 +152,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding: 18px 30px;
-    font-size: 1.8rem;
+    padding: clamp(12px, 1.8vh, 18px) clamp(20px, 2vw, 30px);
+    font-size: clamp(1.3rem, 1rem + 0.8vw, 1.8rem);
     font-weight: bold;
     color: white;
     text-decoration: none;
@@ -158,10 +165,11 @@ body {
 
 .btn-menu .icon {
     margin-right: 20px;
-    font-size: 2.2rem;
+    font-size: clamp(1.6rem, 1.2rem + 0.8vw, 2.2rem);
+    display: inline-block;
 }
 
-/* Colores personalizados por botón */
+/* Colores e iluminación de los botones */
 .btn-mision {
     background-color: #4cd137;
     box-shadow: 0 8px 0 #359824, 0 12px 20px rgba(0, 0, 0, 0.2);
@@ -198,7 +206,7 @@ body {
     box-shadow: 0 6px 0 #c0392b, 0 10px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Comportamiento al interactuar */
+/* Animaciones de interacción */
 .btn-menu:hover {
     transform: translateY(2px);
 }
@@ -209,121 +217,166 @@ body {
 }
 
 /* ==========================================================================
-   6. ANIMACIONES
+   6. PUNTO DE QUIEBRE INTERMEDIO: TABLETS & PORTÁTILES COMPACTOS
    ========================================================================== */
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
+@media (max-width: 1150px) {
+    .game-container {
+        height: 82vh;
+        padding: 25px 30px;
+    }
 
-@keyframes float-dog {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
-}
+    .menu-content {
+        max-width: 900px;
+        gap: 40px;
+    }
 
+    .menu-buttons {
+        max-width: 380px;
+    }
+}
 
 /* ==========================================================================
-   7. RESPONSIVIDAD PARA CELULARES Y DISPOSITIVOS TÁCTILES
+   7. RESPONSIVIDAD EXCLUSIVA PARA CELULARES (VERTICAL)
    ========================================================================== */
 @media (max-width: 768px) {
     body {
         padding: 10px;
-        overflow-y: auto; /* Permite hacer scroll vertical si la pantalla es muy pequeña */
+        overflow-y: auto;
         align-items: flex-start;
     }
 
     .game-container {
         height: auto;
         min-height: calc(100vh - 20px);
-        padding: 25px 15px;
+        padding: 20px 15px;
         border: 5px solid #fff;
+        border-radius: 16px;
         justify-content: flex-start;
-        gap: 20px;
+        gap: 15px;
     }
 
-    /* Reducción ergonómica del título principal */
     .logo-title {
-        font-size: 3.2rem;
-        letter-spacing: 2px;
+        font-size: 2.8rem;
+        letter-spacing: 1px;
         text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 6px rgba(0, 0, 0, 0.15);
     }
 
     .menu-subtitle {
-        font-size: 1.1rem;
-        padding: 0 10px;
+        font-size: 1.05rem;
+        padding: 0 5px;
     }
 
-    /* Cambio estructural: Los elementos se apilan verticalmente */
+    /* Distribución vertical fluida */
     .menu-content {
         flex-direction: column;
-        gap: 20px;
-        margin-top: 10px;
+        gap: 15px;
+        margin-top: 5px;
         width: 100%;
     }
 
+    /* Perro al lado del bocadillo para ganar altura vital en celulares */
     .character-zone {
-        flex-direction: row; /* Colocamos al perrito al lado de su texto para ahorrar altura */
+        flex-direction: row;
         justify-content: center;
-        gap: 12px;
+        align-items: center;
+        gap: 10px;
         width: 100%;
+        margin-bottom: 5px;
     }
 
     .ecopet-avatar {
-        width: 100px; /* Tamaño compacto para móvil */
+        width: 90px;
     }
 
-    /* Rediseño del bocadillo de diálogo para posición lateral */
+    /* Rediseño horizontal del bocadillo para el flujo móvil */
     .menu-bubble {
-        display: block; /* Forzamos que se muestre pero adaptado */
-        font-size: 0.95rem;
-        padding: 10px 14px;
+        font-size: 0.9rem;
+        padding: 8px 12px;
         max-width: 180px;
         border: 3px solid #ff9d00;
         border-radius: 16px;
     }
 
-    /* Modificamos las flechas del bocadillo para que apunten hacia la izquierda (al perro) */
+    /* Reubicamos las flechas del bocadillo hacia la izquierda (apuntando al perro) */
     .menu-bubble::after {
         top: 50%;
-        left: -11px;
+        left: -10px;
         transform: translateY(-50%) rotate(90deg);
-        border-width: 12px 12px 0;
+        border-width: 10px 10px 0;
     }
 
     .menu-bubble::before {
         top: 50%;
-        left: -16px;
+        left: -14px;
         transform: translateY(-50%) rotate(90deg);
-        border-width: 14px 14px 0;
+        border-width: 12px 12px 0;
     }
 
-    /* Ajustes en los botones para que quepan bien en el dedo de un niño */
+    /* Botonera expandida táctil para dedos infantiles */
     .menu-buttons {
-        gap: 12px;
+        gap: 10px;
         max-width: 100%;
         padding: 0 5px;
     }
 
     .btn-menu {
         padding: 12px 20px;
-        font-size: 1.25rem;
+        font-size: 1.3rem;
         border: 3px solid #fff;
         border-radius: 30px;
-        justify-content: center; /* Centramos el contenido en móvil */
+        justify-content: center;
     }
 
     .btn-menu .icon {
         margin-right: 12px;
         font-size: 1.5rem;
     }
-    
-    /* Suavizado de profundidad 3D en móvil para evitar saltos bruscos */
-    .btn-mision { box-shadow: 0 5px 0 #359824, 0 6px 10px rgba(0, 0, 0, 0.15); }
-    .btn-tienda { box-shadow: 0 5px 0 #00b894, 0 6px 10px rgba(0, 0, 0, 0.15); }
-    .btn-aprender { box-shadow: 0 5px 0 #d38100, 0 6px 10px rgba(0, 0, 0, 0.15); }
-    .btn-salir { box-shadow: 0 5px 0 #c0392b, 0 6px 10px rgba(0, 0, 0, 0.15); }
+
+    /* Adaptación del relieve 3D móvil */
+    .btn-mision {
+        box-shadow: 0 5px 0 #359824, 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-tienda {
+        box-shadow: 0 5px 0 #00b894, 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-aprender {
+        box-shadow: 0 5px 0 #d38100, 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-salir {
+        box-shadow: 0 5px 0 #c0392b, 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
 
     .btn-menu:active {
         transform: translateY(5px);
+    }
+}
+
+/* ==========================================================================
+   8. ANIMACIONES CONTROLADAS
+   ========================================================================== */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes float-dog {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
     }
 }
