@@ -29,12 +29,12 @@ body {
     background-size: cover;
     border: 8px solid #fff;
     border-radius: 24px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     padding: 30px;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
 
 .header-title {
@@ -139,20 +139,21 @@ body {
 }
 
 /* ==========================================================================
-   3. ADAPTACIÓN MÉTRICA PARA CELULARES
+   3. ADAPTACIÓN EXCLUSIVA PARA CELULARES
    ========================================================================== */
 @media (max-width: 768px) {
     body {
         padding: 8px;
         overflow-y: auto;
-        /* Permite scroll cómodo si el dispositivo móvil es muy pequeño */
+        /* Permite scroll si la pantalla del móvil es extremadamente pequeña */
     }
 
     .game-container {
         height: auto;
         min-height: calc(100vh - 16px);
         padding: 20px 12px;
-        border: 5px solid #fff;
+        border: 4px solid #fff;
+        border-radius: 16px;
         justify-content: flex-start;
         gap: 15px;
     }
@@ -161,41 +162,41 @@ body {
         font-size: 2rem;
     }
 
-    /* Transformación a columna vertical */
+    /* Transformamos la alineación de fila horizontal a columna vertical */
     .game-content {
         flex-direction: column;
         width: 100%;
         height: auto;
-        gap: 15px;
+        gap: 12px;
     }
 
-    /* Redimensionamiento proporcional del avatar */
+    /* Redimensionamiento elástico del avatar para móvil */
     .ecopet-avatar {
-        max-height: 130px;
+        max-height: 120px;
         width: auto;
     }
 
-    /* El pergamino toma todo el ancho y se ajusta a su contenido */
+    /* El pergamino toma todo el ancho para evitar que el texto colapse horizontalmente */
     .scroll-container {
         width: 100%;
         height: auto;
-        padding: 15px 10px;
+        padding: 15px 12px;
         border-left: 10px solid #d8b467;
         border-right: 10px solid #d8b467;
     }
 
-    /* Escalado tipográfico responsivo infantil */
+    /* Ajustes tipográficos infantiles para pantallas pequeñas */
     .scroll-content h3 {
         font-size: 1.1rem;
     }
 
     .challenge-text {
-        font-size: 1.25rem;
+        font-size: 1.2rem;
         margin: 6px 0;
     }
 
     .divider {
-        margin: 10px 0;
+        margin: 8px 0;
     }
 
     .reward-text {
@@ -204,17 +205,19 @@ body {
     }
 
     .encouragement {
-        font-size: 0.95rem;
-        margin-top: 10px;
+        font-size: 0.9rem;
+        margin-top: 8px;
     }
 
-    /* Adaptación del botón para toques fáciles en pantallas táctiles */
+    /* Botón adaptado para fácil pulsación táctil */
     .btn-iniciar {
         font-size: 1.4rem;
         padding: 10px 0;
         width: 100%;
-        max-width: 280px;
+        max-width: 260px;
         box-shadow: 0 4px 0 #2c9c1b, 0 6px 10px rgba(0, 0, 0, 0.15);
+        margin-top: auto;
+        /* Empuja el botón al fondo si sobra espacio */
     }
 
     .btn-iniciar:active {
