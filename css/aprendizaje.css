@@ -1,0 +1,299 @@
+/* ==========================================
+   ESTILOS GLOBALES
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial Rounded MT Bold', 'Comic Sans MS', sans-serif;
+}
+
+body {
+    background: #87CEEB;
+    /* Tu color de fondo original exterior */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    padding: 20px;
+}
+
+/* ==========================================
+   CONTENEDOR PRINCIPAL
+   ========================================== */
+.game-container {
+    width: 100%;
+    max-width: 1400px;
+    /* Tu ancho original */
+    height: 85vh;
+    /* Tu alto original dinámico */
+    min-height: 550px;
+    background: url('../imagenes/fonditoaprende.png') no-repeat center;
+    background-size: cover;
+    border: 8px solid #fff;
+    border-radius: 24px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 30px 40px;
+    text-align: center;
+}
+
+/* Pizarra blanca central con tus medidas originales */
+.board {
+    background: rgba(255, 255, 255, 0.95);
+    width: 90%;
+    /* Tu ancho original */
+    height: 75%;
+    /* Tu alto original */
+    border-radius: 30px;
+    border: 5px solid #e2edf7;
+    padding: 20px 40px;
+    text-align: center;
+    box-shadow: 0 12px 0 rgba(0, 0, 0, 0.05);
+    z-index: 2;
+    overflow-y: auto;
+    /* Tu comportamiento original */
+}
+
+/* ==========================================
+   TEXTOS Y TÍTULOS (ESTILOS ORIGINALES)
+   ========================================== */
+.main-title {
+    font-size: 2.8rem;
+    line-height: 1.1;
+    margin-bottom: 10px;
+    font-weight: 900;
+    text-shadow: 1px 1px 0px #fff;
+}
+
+.text-blue {
+    color: #1e3799;
+}
+
+.text-orange {
+    color: #f39c12;
+}
+
+.text-green {
+    color: #27ae60;
+}
+
+.text-dark-blue {
+    color: #0a3d62;
+}
+
+.text-navy {
+    color: #0c2461;
+}
+
+.subtitle {
+    color: #1c2833;
+    font-size: 1.2rem;
+    line-height: 1.4;
+    margin-bottom: 15px;
+}
+
+.text-green-sub {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+/* ==========================================
+   GRID Y TARJETAS (ESTILO ACTUALIZADO)
+   ========================================== */
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 10px;
+}
+
+.card {
+    border-radius: 20px;
+    padding: 15px 10px 20px 10px;
+    /* Reducido para equilibrar el espacio inferior */
+    color: white;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    /* CAMBIO: Ahora es flexible. Mide 200px por defecto y crece si es necesario */
+    min-height: 200px;
+    height: auto;
+
+    border: 3px dashed rgba(255, 255, 255, 0.6);
+    box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.15);
+    position: relative;
+    cursor: pointer;
+
+    /* Suaviza el escalado y el comportamiento al hacer clic */
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.03);
+}
+
+/* Estado de la tarjeta cuando está seleccionada/abierta */
+.card.active {
+    box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.15), 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform: scale(1.02);
+}
+
+.card h3 {
+    font-size: 1.1rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    line-height: 1.2;
+}
+
+/* Alineador central para el residuo */
+.card-image-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.card-img {
+    max-height: 110px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(2px 3px 3px rgba(0, 0, 0, 0.15));
+}
+
+/* Colores de las tarjetas */
+.card-azul {
+    background-color: #2980b9;
+}
+
+.card-amarillo {
+    background-color: #f1c40f;
+}
+
+.card-verde {
+    background-color: #2ecc71;
+}
+
+.card-marron {
+    background-color: #d35400;
+}
+
+/* ==========================================
+   NUEVA SECCIÓN: DESCRIPCIÓN DE TARJETAS
+   ========================================== */
+.card-description {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    font-size: 0.9rem;
+    font-weight: normal;
+    margin-top: 0;
+    line-height: 1.3;
+    padding: 0 10px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    /* Transición suave para el efecto de estirado */
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out, margin-top 0.3s ease-out;
+}
+
+/* Se ejecuta cuando la tarjeta tiene la clase .active */
+.card.active .card-description {
+    max-height: 120px;
+    /* Altura máxima para permitir que el texto se despliegue */
+    opacity: 1;
+    margin-top: 15px;
+}
+
+/* Icono redondo blanco de abajo */
+.card-footer-icon {
+    background-color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+    position: absolute;
+    bottom: -15px;
+    left: calc(50% - 17.5px);
+    border: 2px solid #fff;
+}
+
+.mini-icon {
+    width: 18px;
+    height: auto;
+}
+
+/* ==========================================
+   PERSONAJE (ECOPET ORIGINAL)
+   ========================================== */
+.character-ecopet {
+    position: absolute;
+    left: -250px;
+    bottom: 100px;
+    z-index: 3;
+}
+
+.ecopet-avatar {
+    width: 500px;
+    height: auto;
+    animation: float-dog 3.5s ease-in-out infinite;
+}
+
+/* ==========================================
+   BOTÓN INFERIOR ORIGINAL (ESTILO 3D)
+   ========================================== */
+.button-container {
+    position: absolute;
+    bottom: 25px;
+    z-index: 4;
+}
+
+.btn-aprender {
+    display: inline-block;
+    background-color: #27ae60;
+    color: white;
+    font-size: 2.2rem;
+    font-weight: bold;
+    padding: 12px 80px;
+    border-radius: 50px;
+    border: 4px solid #fff;
+    text-decoration: none;
+    box-shadow: 0 8px 0 #1e7e43, 0 12px 20px rgba(0, 0, 0, 0.3);
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+    transition: transform 0.1s, box-shadow 0.1s;
+    cursor: pointer;
+}
+
+.btn-aprender:hover {
+    transform: translateY(2px);
+    box-shadow: 0 6px 0 #1e7e43, 0 10px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-aprender:active {
+    transform: translateY(8px);
+    box-shadow: none;
+}
+
+/* ==========================================
+   ANIMACIONES
+   ========================================== */
+@keyframes float-dog {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoPet - Tienda</title>
+    <link rel="stylesheet" href="../css/tienda.css">
+</head>
+<body>
+    <div class="game-container">
+        
+        <div class="panel panel-logros">
+            <h2>LOGROS</h2>
+            <div class="stat-box">
+                <p>Estrellas ganadas</p>
+                <div class="badge">⭐ 125 / 200</div>
+            </div>
+            <div class="stat-box">
+                <p>Monedas recolectadas</p>
+                <div class="badge">🪙 <span id="saldo-monedas">350</span> / 500</div>
+            </div>
+        </div>
+
+        <div class="panel panel-tienda">
+            <h2>TIENDA</h2>
+            <div class="items-market">
+                <div class="shop-item">
+                    <h4>Collar ecológico</h4>
+                    <div class="item-img">🟢</div>
+                    <button class="btn-buy" onclick="buyItem(100, this)">🪙 100</button>
+                </div>
+                <div class="shop-item">
+                    <h4>Gorra verde</h4>
+                    <div class="item-img">🧢</div>
+                    <button class="btn-buy" onclick="buyItem(120, this)">🪙 120</button>
+                </div>
+                <div class="shop-item">
+                    <h4>Lentes recicladores</h4>
+                    <div class="item-img">🕶️</div>
+                    <button class="btn-buy" onclick="buyItem(150, this)">🪙 150</button>
+                </div>
+            </div>
+            <p class="footer-msg">¡Luce genial y ecoamigable! 🍃</p>
+        </div>
+
+        <a href="inicio.html" class="back-home">🏠</a>
+    </div>
+
+    <script>
+        let saldo = 350;
+
+        function buyItem(costo, buttonElement) {
+            if (saldo >= costo) {
+                saldo -= costo;
+                document.getElementById('saldo-monedas').innerText = saldo;
+                buttonElement.innerText = "¡Comprado!";
+                buttonElement.style.background = "#7f8c8d";
+                buttonElement.disabled = true;
+                alert("¡Excelente adquisición para tu EcoPet!");
+            } else {
+                alert("No tienes suficientes monedas. ¡Sigue reciclando!");
+            }
+        }
+    </script>
+</body>
+</html>

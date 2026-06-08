@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoPet - Cargando Aventura...</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="loader-container">
+        <h1 class="loader-title">EcoPet</h1>
+
+        <div class="character-loading">
+            <img src="imagenes/cachorrowin.png" alt="EcoPet Cargando" class="loading-avatar">
+        </div>
+
+        <p class="loader-text">Preparando el planeta para jugar...</p>
+
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const progressFill = document.getElementById('progress-fill');
+            
+            // Animación manual de la barra de progreso para asegurar el ritmo visual
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    // Redirecciona automáticamente tras completarse la barra (aprox 2.5 segundos)
+                    window.location.href = "html/inicio.html";
+                } else {
+                    width += 2; // Velocidad del llenado
+                    progressFill.style.width = width + '%';
+                }
+            }, 40); // 40ms * 50 pasos = 2000ms (2 segundos de carga perfecta)
+        });
+    </script>
+</body>
+</html>

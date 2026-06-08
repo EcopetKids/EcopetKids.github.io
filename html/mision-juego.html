@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoPet - Recolectando Plásticos</title>
+    <link rel="stylesheet" href="../css/mision-juego.css">
+</head>
+
+<body>
+    <div class="game-container">
+        <!-- Barra Superior -->
+        <!-- Barra Superior -->
+        <div class="top-bar">
+            <div class="title-block">
+                <h2>Misión Plásticos</h2>
+                <p class="mission-instruction">¡Ayuda a EcoPet! Haz clic únicamente sobre los 5 residuos plásticos para
+                    limpiar la pradera.</p>
+            </div>
+            <div class="counter-box">
+                <span id="progress-text">0 / 5</span>
+            </div>
+        </div>
+
+        <!-- Campo de Residuos -->
+        <div class="waste-field" id="waste-field">
+            <div class="trash plastic" onclick="collectPlastic(this)">🍾</div>
+            <div class="trash plastic" onclick="collectPlastic(this)">🛍️</div>
+            <div class="trash plastic" onclick="collectPlastic(this)">🍱</div>
+            <div class="trash plastic" onclick="collectPlastic(this)">🥤</div>
+            <div class="trash plastic" onclick="collectPlastic(this)">🍼</div>
+            <div class="trash wrong" onclick="collectWrong()">📰</div>
+            <div class="trash wrong" onclick="collectWrong()">🍌</div>
+            <div class="trash wrong" onclick="collectWrong()">🧪</div>
+        </div>
+
+        <!-- Zona del Cachorro Ganador (Oculto al inicio) -->
+        <div class="character-zone" id="win-zone">
+            <img src="../imagenes/cachorrowin.png" alt="¡Cachorro Ganador!" class="ecopet-avatar-win">
+            <div class="win-bubble">¡Guau! ¡Lo logramos! ¡Vamos a la tienda! 🐾🎉</div>
+        </div>
+
+        <!-- Botón de Misión -->
+        <button id="btn-completar" class="btn-disabled" disabled>COMPLETAR MISIÓN</button>
+    </div>
+
+    <script>
+        let plasticCount = 0;
+
+        function collectPlastic(element) {
+            if (!element.classList.contains('collected')) {
+                element.classList.add('collected');
+                element.style.visibility = 'hidden'; // Desaparece al clickearlo
+                plasticCount++;
+                document.getElementById('progress-text').innerText = `${plasticCount} / 5`;
+
+                if (plasticCount >= 5) {
+                    // Activar el botón de victoria
+                    const btn = document.getElementById('btn-completar');
+                    btn.removeAttribute('disabled');
+                    btn.className = 'btn-ready';
+                    btn.onclick = function () { window.location.href = 'menu.html'; }
+
+                    // Mostrar al cachorro ganador con sus efectos
+                    document.getElementById('win-zone').classList.add('show-win');
+                    document.getElementById('waste-field').style.opacity = '0.3'; // Atenúa el fondo para resaltar al perrito
+                }
+            }
+        }
+
+        function collectWrong() {
+            alert("¡Eso no es plástico! Busca solo envases, bolsas o botellas plásticas.");
+        }
+    </script>
+</body>
+
+</html>

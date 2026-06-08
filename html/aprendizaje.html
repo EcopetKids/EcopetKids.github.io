@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoPet - Aprende a Reciclar</title>
+    <link rel="stylesheet" href="../css/aprendizaje.css">
+</head>
+
+<body>
+    <div class="game-container">
+
+        <div class="board">
+
+            <h1 class="main-title">
+                <span class="text-blue">Aprende</span>
+                <span class="text-orange">a</span>
+                <span class="text-green">Reciclar</span>
+                <br>
+                <span class="text-dark-blue">con</span>
+                <span class="text-navy">EcoPet</span>
+            </h1>
+
+            <p class="subtitle">
+                <strong>EcoPet tiene cuatro amigos guardianes del reciclaje.</strong><br>
+                Cada uno protege un tipo diferente de residuo.<br>
+                <span class="text-green-sub">Aprende dónde va cada objeto y conviértete en un héroe del planeta.</span>
+            </p>
+
+            <div class="categories-grid">
+
+                <div class="card card-azul" onclick="toggleCard(this)">
+                    <h3>Papel y<br>cartón</h3>
+                    <div class="card-image-container">
+                        <img src="../imagenes/papel_carton.png" alt="Papel y Cartón" class="card-img">
+                    </div>
+                    <p class="card-description">Aquí van los periódicos, revistas, cajas de cartón y hojas de papel
+                        limpias.</p>
+                </div>
+
+                <div class="card card-amarillo" onclick="toggleCard(this)">
+                    <h3>Plástico</h3>
+                    <div class="card-image-container">
+                        <img src="../imagenes/plastico.png" alt="Plástico" class="card-img">
+                    </div>
+                    <p class="card-description">Deposita aquí botellas de agua, envases de jugo, bolsas y tapitas
+                        plásticas.</p>
+                </div>
+
+                <div class="card card-verde" onclick="toggleCard(this)">
+                    <h3>Vidrio</h3>
+                    <div class="card-image-container">
+                        <img src="../imagenes/vidrio.png" alt="Vidrio" class="card-img">
+                    </div>
+                    <p class="card-description">Para botellas de vidrio, frascos de conservas y tarros de perfume
+                        vacíos.</p>
+                </div>
+
+                <div class="card card-marron" onclick="toggleCard(this)">
+                    <h3>Orgánicos</h3>
+                    <div class="card-image-container">
+                        <img src="../imagenes/organicos.png" alt="Orgánicos" class="card-img">
+                    </div>
+                    <p class="card-description">Restos de comida, cáscaras de fruta, verduras, café y restos de
+                        jardinería.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="character-ecopet">
+            <img src="../imagenes/cachorroqueseñala.png" alt="EcoPet Cachorro" class="ecopet-avatar">
+        </div>
+
+        <div class="button-container">
+            <a href="juego-drag.html" class="btn-aprender">COMENZAR A APRENDER</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleCard(cardElement) {
+            // Alterna la clase 'active' en la tarjeta que presionas
+            cardElement.classList.toggle('active');
+        }
+    </script>
+</body>
+
+</html>

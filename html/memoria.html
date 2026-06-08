@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoPet - Juego de Memoria</title>
+    <link rel="stylesheet" href="../css/memoria.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Barra Superior -->
+        <div class="top-bar">
+            <div class="title-block">
+                <a href="menu.html" class="btn-back">⬅ Menú</a>
+                <h2>Memoria Ecológica</h2>
+            </div>
+            <div class="stats-box">
+                <span id="moves-count">Movimientos: 0</span>
+            </div>
+        </div>
+
+        <!-- Tablero de Cartas (4x4) -->
+        <div class="memory-grid" id="memory-grid">
+            <!-- Las 16 cartas se generan dinámicamente con JavaScript abajo -->
+        </div>
+
+        <!-- Zona de Victoria Oculta (Cachorro Win) -->
+        <div class="character-zone" id="win-zone">
+            <div class="win-bubble">¡Increíble! ¡Tienes una memoria brillante! 🐾 mentalidad eco-activada.</div>
+            <img src="../imagenes/cachorrowin.png" alt="¡Ganaste!" class="ecopet-avatar-win">
+        </div>
+
+        <!-- Botón de Acción -->
+        <button id="btn-action" class="btn-refresh" onclick="resetGame()">REINICIAR JUEGO</button>
+    </div>
+
+    <script>
+        // Parejas de emojis ecológicos (8 tipos distintos, 2 de cada uno = 16 cartas)
+        const items = ['🍾', '🛍️', '🍱', '🥤', '🍼', '📰', '🍌', '📦'];
+        let cardsDeck = [...items, ...items];
+        
+        let hasFlippedCard = false;
+        let lockBoard = false;
+        let firstCard, secondCard;
+        let moves = 0;
+        let matchesFound = 0;
+
+        function createBoard() {
+            const grid = document.getElementById('memory-grid');
+            grid.innerHTML = '';
+            matchesFound = 0;
+            moves = 0;
+            document.getElementById('moves-count').innerText = `Movimientos: ${moves}`;
+            document.getElementById('win-zone').classList.remove('show-win');
+            grid.style.opacity = '1';
+            
+            const btn = document.getElementById('btn-action');
+            btn.innerText = "REINICIAR JUEGO";
+            btn.className = "btn-refresh";
+            btn.onclick = resetGame;
+
+            // Barajar las cartas aleatoriamente
+            cardsDeck.sort(() => Math.random() - 0.5);
+
+            // Generar los elementos HTML del tablero
+            cardsDeck.forEach(item => {
+                const card = document.createElement('div');
+                card.classList.add('memory-card');
+                card.dataset.framework = item;
+
+                card.innerHTML = `
+                    <div class="front-face">${item}</div>
+                    <div class="back-face">🐾</div>
+                `;
+
+                card.addEventListener('click', flipCard);
+                grid.appendChild(card);
+            });
+        }
+
+        function flipCard() {
+            if (lockBoard) return;
+            if (this === firstCard) return;
+
+            this.classList.add('flip');
+
+            if (!hasFlippedCard) {
+                // Primer clic
+                hasFlippedCard = true;
+                firstCard = this;
+                return;
+            }
+
+            // Segundo clic
+            secondCard = this;
+            checkForMatch();
+        }
+
+        function checkForMatch() {
+            moves++;
+            document.getElementById('moves-count').innerText = `Movimientos: ${moves}`;
+            
+            let isMatch = firstCard.dataset.framework === secondCard.dataset.framework;
+            isMatch ? disableCards() : unflipCards();
+        }
+
+        function disableCards() {
+            firstCard.removeEventListener('click', flipCard);
+            secondCard.removeEventListener('click', flipCard);
+            
+            matchesFound++;
+            if(matchesFound === items.length) {
+                setTimeout(showVictory, 500);
+            }
+
+            resetBoardVariables();
+        }
+
+        function unflipCards() {
+            lockBoard = true;
+
+            setTimeout(() => {
+                firstCard.classList.remove('flip');
+                secondCard.classList.remove('flip');
+
+                resetBoardVariables();
+            }, 1000);
+        }
+
+        function resetBoardVariables() {
+            [hasFlippedCard, lockBoard] = [false, false];
+            [firstCard, secondCard] = [null, null];
+        }
+
+        function showVictory() {
+            document.getElementById('win-zone').classList.add('show-win');
+            document.getElementById('memory-grid').style.opacity = '0.15';
+            
+            const btn = document.getElementById('btn-action');
+            btn.innerText = "VOLVER AL MENÚ";
+            btn.className = "btn-ready-win";
+            btn.onclick = function() { window.location.href = 'menu.html'; };
+        }
+
+        function resetGame() {
+            resetBoardVariables();
+            createBoard();
+        }
+
+        // Arrancar el juego al cargar la página
+        createBoard();
+    </script>
+</body>
+</html>

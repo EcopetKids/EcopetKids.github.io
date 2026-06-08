@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoPet - Aprende a Reciclar</title>
+    <link rel="stylesheet" href="../css/aprender-mas.css">
+</head>
+
+<body>
+    <div class="game-container">
+
+        <!-- Barra Superior de Recursos -->
+        <div class="resource-bar">
+            <a href="menu.html" class="btn-volver">⬅ Volver al Menú</a>
+            <div class="coin-status">
+                <span class="coin-icon">🪙</span>
+                <span id="player-coins">500</span> <!-- Monedas iniciales de prueba -->
+            </div>
+        </div>
+
+        <div class="board">
+            <h1 class="main-title">
+                <span class="text-blue">Aprende</span>
+                <span class="text-orange">a</span>
+                <span class="text-green">Reciclar</span>
+                <br>
+                <span class="text-dark-blue">con</span>
+                <span class="text-navy">EcoPet</span>
+            </h1>
+
+            <p class="subtitle">
+                <strong>¡Usa tus monedas de EcoPet para desbloquear secretos ecológicos!</strong><br>
+                Cada lección cuesta <span class="text-orange-sub">10 monedas 🪙</span>. ¡Aprende y conviértete en un
+                héroe del planeta!
+            </p>
+
+            <div class="categories-grid">
+
+                <!-- Tarjeta 1: Papel y Cartón -->
+                <div class="card card-azul locked" data-locked="true" onclick="interactCard(this)">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                        <span class="lock-cost">10 🪙</span>
+                    </div>
+                    <h3>Papel y<br>cartón</h3>
+                    <div class="card-image-container">
+                        <img src="../imagenes/papel_carton.png" alt="Papel y Cartón" class="card-img">
+                    </div>
+                    <div class="card-secret-content">
+                        <p class="card-description">Aquí van los periódicos, revistas y cajas limpias.</p>
+                        <div class="fun-fact">💡 <strong>Dato Curioso:</strong> ¡Reciclar 1 tonelada de papel salva a 17
+                            árboles de ser cortados y ahorra mucha agua! 🌳</div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2: Plástico -->
+                <div class="card card-amarillo locked" data-locked="true" onclick="interactCard(this)">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                        <span class="lock-cost">10 🪙</span>
+                    </div>
+                    <h3>Plástico</h3>
+                    <div class="card-image-container">
+                        <img src="../imagenes/plastico.png" alt="Plástico" class="card-img">
+                    </div>
+                    <div class="card-secret-content">
+                        <p class="card-description">Deposita aquí botellas de agua, envases, bolsas y tapitas.</p>
+                        <div class="fun-fact">💡 <strong>Dato Curioso:</strong> Una botella plástica tarda hasta 500
+                            años en desintegrarse. ¡Al reciclarla evitas que llegue al océano! 🐢</div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3: Vidrio -->
+                <div class="card card-verde locked" data-locked="true" onclick="interactCard(this)">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                        <span class="lock-cost">10 🪙</span>
+                    </div>
+                    <h3>Vidrio</h3>
+                    <div class="card-image-container">
+                        <img src="../imagenes/vidrio.png" alt="Vidrio" class="card-img">
+                    </div>
+                    <div class="card-secret-content">
+                        <p class="card-description">Para botellas, frascos de conservas y tarros vacíos.</p>
+                        <div class="fun-fact">💡 <strong>Dato Curioso:</strong> El vidrio es mágico: ¡se puede reciclar
+                            infinitas veces sin perder nunca su calidad! 🌟</div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 4: Orgánicos -->
+                <div class="card card-marron locked" data-locked="true" onclick="interactCard(this)">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                        <span class="lock-cost">10 🪙</span>
+                    </div>
+                    <h3>Orgánicos</h3>
+                    <div class="card-image-container">
+                        <img src="../imagenes/organicos.png" alt="Orgánicos" class="card-img">
+                    </div>
+                    <div class="card-secret-content">
+                        <p class="card-description">Restos de comida, cáscaras de fruta y hojas secas.</p>
+                        <div class="fun-fact">💡 <strong>Dato Curioso:</strong> Con estos restos podemos crear
+                            "compost", una tierra súper nutritiva que hace crecer las plantas fuertes. 🌱</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="character-ecopet">
+            <img src="../imagenes/cachorroqueseñala.png" alt="EcoPet Cachorro" class="ecopet-avatar">
+        </div>
+
+        <div class="button-container">
+            <a href="juego-drag.html" class="btn-aprender">PRACTICAR LO APRENDIDO</a>
+        </div>
+    </div>
+
+    <script>
+        let currentCoins = parseInt(document.getElementById('player-coins').innerText);
+
+        function interactCard(cardElement) {
+            const isLocked = cardElement.getAttribute('data-locked') === 'true';
+
+            if (isLocked) {
+                // Intento de desbloqueo
+                if (currentCoins >= 10) {
+                    const confirmUnlock = confirm("¿Quieres gastar 10 monedas 🪙 para desbloquear esta valiosa lección?");
+                    if (confirmUnlock) {
+                        currentCoins -= 10;
+                        document.getElementById('player-coins').innerText = currentCoins;
+
+                        // Quitar estado bloqueado de forma inmediata y animada
+                        cardElement.setAttribute('data-locked', 'false');
+                        cardElement.classList.remove('locked');
+                        cardElement.classList.add('active'); // Abre la tarjeta automáticamente al comprarla
+                    }
+                } else {
+                    alert("❌ ¡No tienes suficientes monedas! Limpia la pradera en las Misiones del Día para ganar más 🪙.");
+                }
+            } else {
+                // Comportamiento normal de acordeón una vez comprado
+                cardElement.classList.toggle('active');
+            }
+        }
+    </script>
+</body>
+
+</html>

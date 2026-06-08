@@ -1,0 +1,124 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial Round', 'Comic Sans MS', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #87CEEB;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 1024px;
+    height: 576px;
+    background: #20bf6b;
+    border: 8px solid #fff;
+    border-radius: 24px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+    padding: 25px;
+    position: relative;
+}
+
+.panel {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 8px 0 rgba(0,0,0,0.1);
+}
+
+.panel h2 {
+    color: white;
+    padding: 5px 30px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.panel-logros h2 { background: #2d98da; }
+.panel-tienda h2 { background: #10ac84; }
+
+/* Sección Logros */
+.stat-box {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 25px;
+}
+.stat-box p { font-weight: bold; color: #7f8c8d; margin-bottom: 5px;}
+
+.badge {
+    background: #f1f2f6;
+    padding: 10px;
+    border-radius: 30px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #2f3542;
+    border: 2px solid #ced6e0;
+}
+
+/* Sección Tienda */
+.items-market {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.shop-item {
+    border: 3px solid #f1f2f6;
+    border-radius: 15px;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.shop-item h4 { color: #576574; font-size: 0.9rem; }
+.item-img { font-size: 3rem; margin: 10px 0; }
+
+.btn-buy {
+    background: #ffa502;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #d37a00;
+}
+.btn-buy:active { transform: translateY(4px); box-shadow: none; }
+
+.footer-msg {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #10ac84;
+}
+
+.back-home {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 2rem;
+    text-decoration: none;
+    background: white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 0 #ccc;
+}

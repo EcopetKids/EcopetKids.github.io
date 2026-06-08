@@ -1,0 +1,147 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial Round', 'Comic Sans MS', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #87CEEB;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 1400px;
+    height: 85vh;
+    min-height: 550px;
+
+    background: url('../imagenes/fonditointro.png') no-repeat center;
+    background-size: cover;
+
+    border: 8px solid #fff;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px;
+}
+
+.header-title {
+    color: white;
+    font-size: 3rem;
+    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* --- NUEVO: Contenedor medio para alinear perrito y pergamino --- */
+.game-content {
+    display: flex;
+    width: 90%;
+    height: 65%;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    /* Separación entre el perro y el pergamino */
+}
+
+/* NUEVO: Ajustes y animación para el perrito */
+.ecopet-avatar {
+    max-height: 100%;
+    width: auto;
+    object-fit: contain;
+    animation: float-dog 3.5s ease-in-out infinite;
+}
+
+/* El Pergamino (Ajustado para convivir con el perrito) */
+.scroll-container {
+    background: #fbf0d9;
+    width: 55%;
+    /* Bajó de 70% a 55% para dar espacio al perrito */
+    height: 100%;
+    /* Toma la altura disponible del game-content */
+    border-radius: 8px;
+    border-left: 15px solid #d8b467;
+    border-right: 15px solid #d8b467;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.scroll-content {
+    text-align: center;
+    color: #2c3e50;
+}
+
+.scroll-content h3 {
+    color: #27ae60;
+    font-size: 1.4rem;
+}
+
+.challenge-text {
+    font-size: 1.6rem;
+    color: #0c2461;
+    margin: 10px 0;
+}
+
+.divider {
+    border: 0;
+    border-top: 2px dashed #b7a47a;
+    margin: 15px 0;
+}
+
+.reward-text {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.encouragement {
+    font-style: italic;
+    font-weight: bold;
+    color: #1e3799;
+    margin-top: 15px;
+}
+
+.btn-iniciar {
+    background-color: #4cd137;
+    color: white;
+    font-size: 1.8rem;
+    font-weight: bold;
+    padding: 10px 60px;
+    border-radius: 50px;
+    border: 4px solid #fff;
+    text-decoration: none;
+    box-shadow: 0 6px 0 #2c9c1b;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+/* Opcional: Pequeña animación al botón para que combine con la primera pantalla */
+.btn-iniciar:hover {
+    transform: translateY(2px);
+    box-shadow: 0 4px 0 #2c9c1b;
+}
+
+.btn-iniciar:active {
+    transform: translateY(6px);
+    box-shadow: none;
+}
+
+/* --- ANIMACIONES --- */
+@keyframes float-dog {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+        /* Movimiento flotante */
+    }
+}

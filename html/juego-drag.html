@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoPet - ¡A Clasificar!</title>
+    <link rel="stylesheet" href="../css/juego-drag.css">
+</head>
+
+<body>
+    <div class="game-container">
+        <div class="status-bar">
+            <div class="vidas" id="contenedor-vidas">❤️ ❤️ ❤️</div>
+            <div class="progreso-bar">
+                <div class="llenado" id="barra-progreso" style="width: 0%;"></div>
+            </div>
+            <div class="monedas">🪙 <span id="puntos">150</span></div>
+        </div>
+
+        <div class="game-field">
+            <div class="mascota-status">
+                <img src="../imagenes/perrito pensativo.png" alt="EcoPet" id="ecopet-emocion">
+            </div>
+
+            <div class="draggable-zone">
+                <div id="objeto-reciclable" class="item-objeto" draggable="true"></div>
+                <p class="indicador" id="nombre-objeto">¡ARRÁSTRALO!</p>
+
+                <button id="btn-reintentar" class="btn-reiniciar" style="display: none;" onclick="reiniciarJuego()">
+                    🔄 Intentar de nuevo
+                </button>
+            </div>
+
+            <div class="popup correct" id="pop-bien" style="display: none;">¡Muy bien! 🎉 +10</div>
+            <div class="popup incorrect" id="pop-mal" style="display: none;">Intenta nuevamente 💔 -1</div>
+        </div>
+
+        <div class="bins-container">
+            <div class="bin bin-azul" data-target="papel">
+                <div class="bin-image-container">
+                    <img src="../imagenes/papel_carton.png" alt="Papel y Cartón" class="bin-img"
+                        style="width: 50px; height: auto; display: block; margin: 0 auto 5px;">
+                </div>
+                <h3>Papel y Cartón</h3>
+            </div>
+
+            <div class="bin bin-amarillo" data-target="plastico">
+                <div class="bin-image-container">
+                    <img src="../imagenes/plastico.png" alt="Plástico" class="bin-img"
+                        style="width: 50px; height: auto; display: block; margin: 0 auto 5px;">
+                </div>
+                <h3>Plástico</h3>
+            </div>
+
+            <div class="bin bin-verde" data-target="vidrio">
+                <div class="bin-image-container">
+                    <img src="../imagenes/vidrio.png" alt="Vidrio" class="bin-img"
+                        style="width: 50px; height: auto; display: block; margin: 0 auto 5px;">
+                </div>
+                <h3>Vidrio</h3>
+            </div>
+
+            <div class="bin bin-marron" data-target="organico">
+                <div class="bin-image-container">
+                    <img src="../imagenes/organicos.png" alt="Orgánicos" class="bin-img"
+                        style="width: 50px; height: auto; display: block; margin: 0 auto 5px;">
+                </div>
+                <h3>Orgánicos</h3>
+            </div>
+        </div>
+
+        <div class="button-container-footer" style="margin-top: 20px; text-align: right;">
+            <a href="menu.html" id="btn-siguiente-pantalla" class="btn-siguiente"
+                style="display: none; text-decoration: none; color: white; background-color: #2b4c7e; padding: 10px 20px; border-radius: 20px; font-weight: bold;">Siguiente
+                Pantalla -></a>
+        </div>
+    </div>
+
+    <script>
+        const listaObjetos = [
+            { info: "📝 Periódico", tipo: "papel" },
+            { info: "📦 Caja de Cartón", tipo: "papel" },
+            { info: "🍾 Botella de Plástico", tipo: "plastico" },
+            { info: "🛍️ Bolsa Plástica", tipo: "plastico" },
+            { info: "🏺 Frasco de Vidrio", tipo: "vidrio" },
+            { info: "🍷 Botella de Vidrio", tipo: "vidrio" },
+            { info: "🍌 Cáscara de Plátano", tipo: "organico" },
+            { info: "🍎 Restos de Manzana", tipo: "organico" }
+        ];
+
+        const objetoElement = document.getElementById('objeto-reciclable');
+        const nombreElement = document.getElementById('nombre-objeto');
+        const botes = document.querySelectorAll('.bin');
+        const puntosTxt = document.getElementById('puntos');
+        const contenedorVidas = document.getElementById('contenedor-vidas');
+        const barraProgreso = document.getElementById('barra-progreso');
+        const ecopetImg = document.getElementById('ecopet-emocion');
+        const btnReintentar = document.getElementById('btn-reintentar');
+        const btnSiguiente = document.getElementById('btn-siguiente-pantalla');
+
+        let puntos = 150;
+        let vidas = 3;
+        let aciertos = 0;
+        let totalParaGanar = 5;
+        let objetoActual = {};
+
+        function cargarNuevoObjeto() {
+            // CONTROL DE VICTORIA
+            if (aciertos >= totalParaGanar) {
+                nombreElement.innerText = "¡Misión Cumplida! 🌟";
+                objetoElement.style.display = 'none';
+                btnReintentar.style.display = 'none'; // No se muestra reintentar si gana
+                btnSiguiente.style.display = 'inline-block'; // Se activa el pase de pantalla
+                return;
+            }
+
+            const indiceAleatorio = Math.floor(Math.random() * listaObjetos.length);
+            objetoActual = listaObjetos[indiceAleatorio];
+
+            objetoElement.innerText = objetoActual.info.split(' ')[0];
+            nombreElement.innerText = objetoActual.info.split(' ').slice(1).join(' ');
+            objetoElement.style.display = 'block';
+            objetoElement.setAttribute('data-tipo', objetoActual.tipo);
+
+            // Estado por defecto en juego continuo
+            btnReintentar.style.display = 'none';
+            btnSiguiente.style.display = 'none';
+        }
+
+        function actualizarVidas() {
+            let corazones = "";
+            for (let i = 0; i < vidas; i++) {
+                corazones += "❤️ ";
+            }
+            if (vidas === 0) corazones = "💀 Juego Terminado";
+            contenedorVidas.innerText = corazones;
+        }
+
+        function reiniciarJuego() {
+            puntos = 150;
+            vidas = 3;
+            aciertos = 0;
+            puntosTxt.innerText = puntos;
+            barraProgreso.style.width = '0%';
+            actualizarVidas();
+            cargarNuevoObjeto();
+        }
+
+        objetoElement.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', e.target.id);
+        });
+
+        botes.forEach(bote => {
+            bote.addEventListener('dragover', (e) => e.preventDefault());
+
+            bote.addEventListener('drop', (e) => {
+                e.preventDefault();
+                if (vidas <= 0 || aciertos >= totalParaGanar) return;
+
+                const tipoBote = bote.getAttribute('data-target');
+
+                if (objetoActual.tipo === tipoBote) {
+                    puntos += 10;
+                    aciertos++;
+                    puntosTxt.innerText = puntos;
+
+                    const porcentaje = (aciertos / totalParaGanar) * 100;
+                    barraProgreso.style.width = `${porcentaje}%`;
+
+                    mostrarPopup('pop-bien');
+
+                    objetoElement.style.display = 'none';
+                    setTimeout(cargarNuevoObjeto, 1000);
+                } else {
+                    puntos = Math.max(0, puntos - 1);
+                    vidas--;
+                    puntosTxt.innerText = puntos;
+                    actualizarVidas();
+
+                    mostrarPopup('pop-mal');
+
+                    // CONTROL DE DERROTA
+                    if (vidas <= 0) {
+                        nombreElement.innerText = "¡Oh no! Inténtalo de nuevo.";
+                        objetoElement.style.display = 'none';
+                        btnReintentar.style.display = 'inline-block'; // Solo aparece reintentar
+                        btnSiguiente.style.display = 'none'; // Asegura que "Siguiente" esté oculto
+                    }
+                }
+            });
+        });
+
+        function mostrarPopup(id) {
+            const pop = document.getElementById(id);
+            pop.style.display = 'block';
+            setTimeout(() => { pop.style.display = 'none'; }, 1500);
+        }
+
+        cargarNuevoObjeto();
+    </script>
+</body>
+
+</html>
