@@ -1,3 +1,6 @@
+/* ==========================================
+   ESTILOS GENERALES (RESET & BASE)
+   ========================================== */
 * {
     margin: 0;
     padding: 0;
@@ -11,11 +14,11 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    overflow-x: hidden; /* Evita que la pantalla se mueva hacia los lados en celular */
+    overflow-x: hidden;
     padding: 20px;
 }
 
-/* Contenedor principal */
+/* Contenedor principal para computadoras */
 .game-container {
     width: 100%;
     max-width: 1400px;
@@ -66,15 +69,19 @@ body {
     margin-bottom: 20px;
 }
 
-/* Avatar del perrito */
+/* Avatar del perrito en computadora */
 .ecopet-avatar {
+    width: 100%;
+    max-width: 280px; /* Tamaño máximo controlado */
+    height: auto;
     object-fit: contain;
-    max-height: 25vh; /* Evita que el perrito aplaste a los demás elementos en pantallas bajas */
+    max-height: 25vh;
     animation: float-dog 3.5s ease-in-out infinite;
 }
 
 /* Botón Jugar */
 .btn-jugar {
+    display: inline-block;
     background-color: #4cd137;
     color: white;
     font-size: 2.5rem;
@@ -100,40 +107,38 @@ body {
 
 
 /* ==========================================
-   ¡SECCIÓN ADAPTADA Y OPTIMIZADA PARA MÓVILES!
+   ¡NUEVA SECCIÓN: ADAPTACIÓN PARA CELULARES!
    ========================================== */
 @media (max-width: 768px) {
     body {
         padding: 10px;
-        align-items: flex-start; /* Permite scroll hacia abajo si el cel es muy chico */
+        align-items: flex-start; /* Evita recortes si la pantalla vertical es muy corta */
     }
 
     .game-container {
-        /* CAMBIO CLAVE: Quitamos los vh rígidos para evitar desbordes */
         height: auto; 
-        min-height: calc(100vh - 20px); /* Ocupa el alto disponible, pero crece si es necesario */
-        
-        padding: 30px 15px; /* Más espacio arriba/abajo, menos a los lados */
+        min-height: calc(100vh - 20px); /* Usa el alto máximo de la pantalla móvil */
+        padding: 30px 15px;
         border: 5px solid #fff;
-        
-        /* Asegura que los elementos se distribuyan bien sin encimarse */
-        justify-content: center; 
-        gap: 20px; 
+        justify-content: center; /* Distribución equilibrada */
+        gap: 20px; /* Espaciado automático entre los bloques */
     }
 
     .logo-title {
-        font-size: 2.2rem; /* Bajado a 2.2rem para que entre en una sola línea */
+        font-size: 2.4rem; /* Reducido para que entre fluido en una línea */
         letter-spacing: 1px;
         line-height: 1.2;
         text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 6px rgba(0, 0, 0, 0.15);
     }
 
     .main-content h2 {
-        font-size: 1.4rem;
+        font-size: 1.3rem; /* Evita bloques enormes de texto */
+        line-height: 1.4;
     }
 
     .main-content p {
         font-size: 1rem;
+        margin-top: 5px;
     }
 
     .character-zone {
@@ -141,17 +146,15 @@ body {
     }
 
     .ecopet-avatar {
-        /* Controlamos el tamaño por ancho y alto máximo relativo */
-        max-width: 140px; 
-        height: auto;
-        max-height: 20vh; 
+        max-width: 140px; /* Escala perfecta para la interfaz móvil */
+        max-height: 20vh;
     }
 
     .btn-jugar {
-        font-size: 1.5rem; /* Letra un pelo más chica para asegurar espacio */
-        padding: 12px 30px; /* Reducido a 30px para evitar que desborde de lado */
-        width: 100%;       /* Hace que el botón sea responsivo... */
-        max-width: 260px;  /* ...pero que no se estire horizontalmente de forma fea */
+        font-size: 1.6rem;
+        padding: 12px 0; /* Eliminamos el padding rígido horizontal */
+        width: 100%;
+        max-width: 260px; /* Ancho ergonómico para el pulgar */
         box-shadow: 0 5px 0 #359824, 0 8px 12px rgba(0, 0, 0, 0.3);
     }
 
@@ -160,13 +163,24 @@ body {
     }
 }
 
-/* --- ANIMACIONES --- */
+
+/* ==========================================
+   ANIMACIONES
+   ========================================== */
 @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 @keyframes float-dog {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
 }
