@@ -145,3 +145,70 @@ body {
         transform: translateY(-15px);
     }
 }
+
+/* ==========================================
+   ¡SECCIÓN ADAPTADA PARA CELULARES (LOGIN/INPUT)!
+   ========================================== */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+        overflow: auto; /* PERMITE SCROLL si el celular es muy antiguo o chiquito */
+        align-items: flex-start; /* El contenido empezará desde arriba si falta espacio */
+    }
+
+    .game-container {
+        height: auto; /* Deja que el contenedor respire verticalmente */
+        min-height: calc(100vh - 20px); /* Ocupa toda la pantalla disponible */
+        padding: 25px 15px; /* Menos espacio a los lados */
+        border: 5px solid #fff; /* Borde más estilizado para móvil */
+        justify-content: center; /* Centra los bloques */
+        gap: 15px; /* Separa los elementos de forma controlada */
+    }
+
+    .avatar-header {
+        margin-bottom: 5px;
+    }
+
+    .ecopet-mini {
+        max-width: 110px; /* Controlamos el ancho del perrito */
+        height: auto;
+        max-height: 18vh; /* Que no se coma la pantalla */
+    }
+
+    .question-box {
+        padding: 12px 20px; /* Reducimos el colchón de los lados */
+        margin-bottom: 15px;
+        width: 100%; /* Que use el ancho disponible */
+        max-width: 320px; /* Pero que no se deforme */
+    }
+
+    .question-box h2 {
+        font-size: 1.4rem; /* Bajamos de 2.2rem para que la pregunta no salte en mil líneas */
+    }
+
+    /* Caja de texto donde el usuario escribe */
+    .input-box {
+        width: 100%; 
+        max-width: 320px; /* Ajustado al ancho estándar de un celular */
+        padding: 15px; /* Menos padding interno */
+        margin-bottom: 25px; /* Menos separación para que suba el botón */
+        border: 4px dashed #ff9f43;
+    }
+
+    .input-box input {
+        font-size: 1.6rem; /* Bajamos de 2.3rem para que el nombre quepa bien */
+    }
+
+    /* Botón Continuar responsivo */
+    .btn-continuar {
+        font-size: 1.6rem; /* Bajamos de 2.4rem */
+        padding: 12px 0; /* Quitamos los 90px fijos de los lados */
+        width: 100%; /* Se estira al ancho de su contenedor... */
+        max-width: 260px; /* ...pero se frena en un tamaño cómodo para el pulgar */
+        box-shadow: 0 5px 0 #d39400, 0 8px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-continuar:active {
+        transform: translateY(5px);
+    }
+}
