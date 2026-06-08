@@ -11,17 +11,14 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden; /* Evita que la pantalla se mueva hacia los lados en celular */
     padding: 20px;
-    /* Pequeño margen de seguridad para pantallas muy chicas */
 }
 
-/* Contenedor principal ampliado */
+/* Contenedor principal */
 .game-container {
     width: 100%;
-    /* CAMBIO: Ahora aprovecha hasta el 95% de la pantalla en lugar de quedarse estancado en 1024px */
     max-width: 1400px;
-    /* CAMBIO: Altura dinámica basada en el tamaño de la pantalla (hasta 85vh) */
     height: 85vh;
     min-height: 550px;
 
@@ -37,32 +34,28 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 40px;
-    /* Más espacio interno */
     text-align: center;
 }
 
-/* Título más grande */
+/* Título */
 .logo-title {
     font-size: 5.5rem;
-    /* Aumentado de 4rem a 5.5rem */
     color: #ff9d00;
     text-shadow: 3px 3px 0 #fff, -3px -3px 0 #fff, 3px -3px 0 #fff, -3px 3px 0 #fff, 0 6px 10px rgba(0, 0, 0, 0.15);
     letter-spacing: 4px;
     animation: float 3s ease-in-out infinite;
 }
 
-/* Contenido principal un poco más grande */
+/* Contenido principal */
 .main-content h2 {
     color: #1d3557;
     font-size: 2.3rem;
-    /* Aumentado de 1.8rem a 2.3rem */
     margin-bottom: 10px;
 }
 
 .main-content p {
     color: #1d3557;
     font-size: 1.5rem;
-    /* Aumentado de 1.2rem a 1.5rem */
     font-weight: bold;
 }
 
@@ -73,22 +66,20 @@ body {
     margin-bottom: 20px;
 }
 
-/* CAMBIO: Aquí agregamos la animación flotante para el perrito */
+/* Avatar del perrito */
 .ecopet-avatar {
     object-fit: contain;
+    max-height: 25vh; /* Evita que el perrito aplaste a los demás elementos en pantallas bajas */
     animation: float-dog 3.5s ease-in-out infinite;
-    /* Una animación exclusiva para él */
 }
 
-/* Botón Jugar ligeramente más grande */
+/* Botón Jugar */
 .btn-jugar {
     background-color: #4cd137;
     color: white;
     font-size: 2.5rem;
-    /* Aumentado de 2.2rem a 2.5rem */
     font-weight: bold;
     padding: 15px 100px;
-    /* Más padding para que se vea imponente */
     border-radius: 50px;
     text-decoration: none;
     border: 4px solid #fff;
@@ -107,32 +98,59 @@ body {
     box-shadow: none;
 }
 
-/* --- ANIMACIONES --- */
 
-/* Animación del título */
-@keyframes float {
-
-    0%,
-    100% {
-        transform: translateY(0);
+/* ==========================================
+   ¡NUEVA SECCIÓN: ADAPTACIÓN PARA CELULARES!
+   ========================================== */
+@media (max-width: 768px) {
+    body {
+        padding: 10px; /* Menos margen exterior para ganar espacio */
     }
 
-    50% {
-        transform: translateY(-10px);
+    .game-container {
+        height: 95vh; /* Aprovecha casi toda la altura en celulares */
+        min-height: auto; /* Quitamos el mínimo para que no se desborde */
+        padding: 20px 15px; /* Reducimos el espacio interno */
+        border: 5px solid #fff; /* Borde un poco más fino */
+    }
+
+    .logo-title {
+        font-size: 2.8rem; /* Bajamos de 5.5rem a 2.8rem para que no se corte */
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .main-content h2 {
+        font-size: 1.6rem; /* Ajustado para pantallas chicas */
+    }
+
+    .main-content p {
+        font-size: 1.1rem; /* Ajustado para pantallas chicas */
+    }
+
+    .ecopet-avatar {
+        max-height: 20vh; /* El perrito se encoge un poco para dejar espacio al botón */
+    }
+
+    .btn-jugar {
+        font-size: 1.8rem; /* Bajamos el tamaño de la letra del botón */
+        padding: 12px 40px; /* Reducimos el ancho drásticamente (de 100px a 40px) para que entre en el ancho del celular */
+        box-shadow: 0 5px 0 #359824, 0 8px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .btn-jugar:active {
+        transform: translateY(5px);
     }
 }
 
-/* NUEVA ANIMACIÓN: Flotar para el perrito (un poco más amplia y descompasada para que no floten al mismo tiempo exacto) */
+
+/* --- ANIMACIONES --- */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
 @keyframes float-dog {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-15px);
-    }
-
-    /* Sube un poquito más */
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
 }
