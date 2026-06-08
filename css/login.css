@@ -149,7 +149,7 @@ body {
     }
 
     .ecopet-mini {
-        max-width: 200px; /* Reducido proporcionalmente para el celular */
+        max-width: 300px; /* Reducido proporcionalmente para el celular */
         height: auto;
         max-height: auto; 
     }
