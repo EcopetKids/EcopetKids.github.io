@@ -151,7 +151,7 @@ body {
     .ecopet-mini {
         max-width: 200px; /* Reducido proporcionalmente para el celular */
         height: auto;
-        max-height: 18vh; 
+        max-height: auto; 
     }
 
     .question-box {
