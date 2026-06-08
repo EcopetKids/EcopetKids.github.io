@@ -100,49 +100,65 @@ body {
 
 
 /* ==========================================
-   ¡NUEVA SECCIÓN: ADAPTACIÓN PARA CELULARES!
+   ¡SECCIÓN ADAPTADA Y OPTIMIZADA PARA MÓVILES!
    ========================================== */
 @media (max-width: 768px) {
     body {
-        padding: 10px; /* Menos margen exterior para ganar espacio */
+        padding: 10px;
+        align-items: flex-start; /* Permite scroll hacia abajo si el cel es muy chico */
     }
 
     .game-container {
-        height: 95vh; /* Aprovecha casi toda la altura en celulares */
-        min-height: auto; /* Quitamos el mínimo para que no se desborde */
-        padding: 20px 15px; /* Reducimos el espacio interno */
-        border: 5px solid #fff; /* Borde un poco más fino */
+        /* CAMBIO CLAVE: Quitamos los vh rígidos para evitar desbordes */
+        height: auto; 
+        min-height: calc(100vh - 20px); /* Ocupa el alto disponible, pero crece si es necesario */
+        
+        padding: 30px 15px; /* Más espacio arriba/abajo, menos a los lados */
+        border: 5px solid #fff;
+        
+        /* Asegura que los elementos se distribuyan bien sin encimarse */
+        justify-content: center; 
+        gap: 20px; 
     }
 
     .logo-title {
-        font-size: 2.8rem; /* Bajamos de 5.5rem a 2.8rem para que no se corte */
-        letter-spacing: 2px;
+        font-size: 2.2rem; /* Bajado a 2.2rem para que entre en una sola línea */
+        letter-spacing: 1px;
+        line-height: 1.2;
         text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 6px rgba(0, 0, 0, 0.15);
     }
 
     .main-content h2 {
-        font-size: 1.6rem; /* Ajustado para pantallas chicas */
+        font-size: 1.4rem;
     }
 
     .main-content p {
-        font-size: 1.1rem; /* Ajustado para pantallas chicas */
+        font-size: 1rem;
+    }
+
+    .character-zone {
+        margin-bottom: 10px;
     }
 
     .ecopet-avatar {
-        max-height: 20vh; /* El perrito se encoge un poco para dejar espacio al botón */
+        /* Controlamos el tamaño por ancho y alto máximo relativo */
+        max-width: 140px; 
+        height: auto;
+        max-height: 20vh; 
     }
 
     .btn-jugar {
-        font-size: 1.8rem; /* Bajamos el tamaño de la letra del botón */
-        padding: 12px 40px; /* Reducimos el ancho drásticamente (de 100px a 40px) para que entre en el ancho del celular */
+        font-size: 1.5rem; /* Letra un pelo más chica para asegurar espacio */
+        padding: 12px 30px; /* Reducido a 30px para evitar que desborde de lado */
+        width: 100%;       /* Hace que el botón sea responsivo... */
+        max-width: 260px;  /* ...pero que no se estire horizontalmente de forma fea */
         box-shadow: 0 5px 0 #359824, 0 8px 12px rgba(0, 0, 0, 0.3);
     }
-    
+
     .btn-jugar:active {
         transform: translateY(5px);
     }
 }
-
 
 /* --- ANIMACIONES --- */
 @keyframes float {
