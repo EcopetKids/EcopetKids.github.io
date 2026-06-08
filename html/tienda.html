@@ -27,20 +27,23 @@
         <div class="panel panel-tienda">
             <h2>TIENDA</h2>
             <div class="items-market">
-                <div class="shop-item">
+                <div class="shop-item" onclick="toggleDescription(this, event)">
                     <h4>Collar ecológicos</h4>
                     <div class="item-img">📿</div>
-                    <button class="btn-buy" onclick="buyItem(100, this)">🪙 100</button>
+                    <p class="item-description">Hecho con semillas recicladas del bosque.</p>
+                    <button class="btn-buy" onclick="buyItem(100, this, event)">🪙 100</button>
                 </div>
-                <div class="shop-item">
+                <div class="shop-item" onclick="toggleDescription(this, event)">
                     <h4>Gorra azul</h4>
                     <div class="item-img">🧢</div>
-                    <button class="btn-buy" onclick="buyItem(120, this)">🪙 120</button>
+                    <p class="item-description">Protección solar con estilo 100% plástico marino.</p>
+                    <button class="btn-buy" onclick="buyItem(120, this, event)">🪙 120</button>
                 </div>
-                <div class="shop-item">
+                <div class="shop-item" onclick="toggleDescription(this, event)">
                     <h4>Lentes recicladores</h4>
                     <div class="item-img">🕶️</div>
-                    <button class="btn-buy" onclick="buyItem(150, this)">🪙 150</button>
+                    <p class="item-description">Diseño moderno fabricado con vidrio reutilizado.</p>
+                    <button class="btn-buy" onclick="buyItem(150, this, event)">🪙 150</button>
                 </div>
             </div>
             <p class="footer-msg">¡Luce genial y ecoamigable! 🍃</p>
@@ -50,7 +53,10 @@
     <script>
         let saldo = 350;
 
-        function buyItem(costo, buttonElement) {
+        function buyItem(costo, buttonElement, event) {
+            // Evita que al dar click al botón se cierre o abra la descripción
+            event.stopPropagation();
+
             if (saldo >= costo) {
                 saldo -= costo;
                 document.getElementById('saldo-monedas').innerText = saldo;
@@ -62,6 +68,11 @@
             } else {
                 alert("No tienes suficientes monedas. ¡Sigue reciclando!");
             }
+        }
+
+        function toggleDescription(cardElement, event) {
+            // Alterna la clase 'active' en la tarjeta seleccionada
+            cardElement.classList.toggle('active');
         }
     </script>
 </body>

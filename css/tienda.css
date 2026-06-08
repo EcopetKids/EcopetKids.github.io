@@ -113,7 +113,7 @@ body {
 }
 
 .shop-item {
-    border: 3px solid rgba(226, 232, 240, 0.8);
+    border: 3px solid rgba(169, 223, 191, 0.8);
     border-radius: 18px;
     padding: 12px;
     text-align: center;
@@ -121,14 +121,21 @@ body {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    background: rgba(255, 255, 255, 0.9);
-    /* Tarjetas internas más sólidas para destacar el ítem */
+    background: rgba(212, 239, 223, 0.9);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s;
+    transition: transform 0.2s, background-color 0.2s;
+    cursor: pointer;
+    /* Indica que se puede pulsar */
 }
 
 .shop-item:hover {
     transform: scale(1.03);
+}
+
+/* Efecto visual cuando la tarjeta está seleccionada/abierta */
+.shop-item.active {
+    background: rgba(186, 234, 201, 0.95);
+    border-color: rgba(46, 204, 113, 0.6);
 }
 
 .shop-item h4 {
@@ -141,6 +148,30 @@ body {
     margin: 10px 0;
     user-select: none;
     animation: micro-float 3.5s ease-in-out infinite;
+}
+
+/* Estilos de la nueva descripción animada */
+.item-description {
+    font-size: 0.8rem;
+    color: #1e3a1e;
+    margin-bottom: 10px;
+    padding: 0 5px;
+    font-family: sans-serif;
+    /* Más legible para textos largos */
+    font-weight: normal;
+    max-height: 0;
+    /* Oculto por defecto */
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+}
+
+/* Muestra la descripción de manera fluida */
+.shop-item.active .item-description {
+    max-height: 60px;
+    /* Espacio suficiente para unas 2-3 líneas */
+    opacity: 1;
+    margin-top: 5px;
 }
 
 /* Botones Estilo 3D Mejorados */
@@ -171,7 +202,6 @@ body {
     margin-top: 15px;
     font-weight: bold;
     color: #0e8a69;
-    /* Un tono más oscuro para asegurar legibilidad sobre el fondo */
     text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.9);
 }
 
@@ -217,14 +247,12 @@ body {
         height: auto;
         min-height: calc(100vh - 20px);
         grid-template-columns: 1fr;
-        /* Columna única en vertical */
         gap: 15px;
         padding: 60px 15px 20px 15px;
         border: 5px solid #fff;
         border-radius: 16px;
     }
 
-    /* Reposicionamiento estético del botón home en celular */
     .back-home {
         top: 12px;
         left: 12px;
@@ -237,7 +265,6 @@ body {
         padding: 18px;
         border-radius: 16px;
         background: rgba(255, 255, 255, 0.8);
-        /* Ajustado también para móviles */
     }
 
     .panel h2 {
@@ -246,7 +273,6 @@ body {
         padding: 4px 20px;
     }
 
-    /* Reducción elástica de estadísticas */
     .stat-box {
         margin-bottom: 15px;
     }
@@ -260,7 +286,6 @@ body {
         padding: 8px;
     }
 
-    /* Mercado fluido adaptado a pantallas pequeñas */
     .items-market {
         grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
         gap: 10px;
@@ -279,6 +304,10 @@ body {
     .item-img {
         font-size: 2.2rem;
         margin: 6px 0;
+    }
+
+    .item-description {
+        font-size: 0.7rem;
     }
 
     .btn-buy {
@@ -310,6 +339,5 @@ body {
 
     50% {
         transform: translateY(-4px);
-        /* Animación sutil para los emojis/items */
     }
 }
