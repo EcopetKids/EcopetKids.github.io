@@ -10,7 +10,6 @@
 
 body {
     background: #87CEEB;
-    /* Tu color de fondo original exterior */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,14 +19,12 @@ body {
 }
 
 /* ==========================================
-   CONTENEDOR PRINCIPAL
+   CONTENEDOR PRINCIPAL (PC)
    ========================================== */
 .game-container {
     width: 100%;
     max-width: 1400px;
-    /* Tu ancho original */
     height: 85vh;
-    /* Tu alto original dinámico */
     min-height: 550px;
     background: url('../imagenes/fonditoaprende.png') no-repeat center;
     background-size: cover;
@@ -43,13 +40,11 @@ body {
     text-align: center;
 }
 
-/* Pizarra blanca central con tus medidas originales */
+/* Pizarra blanca central */
 .board {
     background: rgba(255, 255, 255, 0.95);
     width: 90%;
-    /* Tu ancho original */
     height: 75%;
-    /* Tu alto original */
     border-radius: 30px;
     border: 5px solid #e2edf7;
     padding: 20px 40px;
@@ -57,11 +52,11 @@ body {
     box-shadow: 0 12px 0 rgba(0, 0, 0, 0.05);
     z-index: 2;
     overflow-y: auto;
-    /* Tu comportamiento original */
+    /* Permite hacer scroll interno si el contenido crece */
 }
 
 /* ==========================================
-   TEXTOS Y TÍTULOS (ESTILOS ORIGINALES)
+   TEXTOS Y TÍTULOS
    ========================================== */
 .main-title {
     font-size: 2.8rem;
@@ -104,11 +99,12 @@ body {
 }
 
 /* ==========================================
-   GRID Y TARJETAS (ESTILO ACTUALIZADO)
+   GRID Y TARJETAS
    ========================================== */
 .categories-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    /* 4 Columnas en escritorio */
     gap: 16px;
     margin-top: 10px;
 }
@@ -116,24 +112,18 @@ body {
 .card {
     border-radius: 20px;
     padding: 15px 10px 20px 10px;
-    /* Reducido para equilibrar el espacio inferior */
     color: white;
     font-weight: bold;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-
-    /* CAMBIO: Ahora es flexible. Mide 200px por defecto y crece si es necesario */
     min-height: 200px;
     height: auto;
-
     border: 3px dashed rgba(255, 255, 255, 0.6);
     box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.15);
     position: relative;
     cursor: pointer;
-
-    /* Suaviza el escalado y el comportamiento al hacer clic */
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
@@ -141,7 +131,6 @@ body {
     transform: scale(1.03);
 }
 
-/* Estado de la tarjeta cuando está seleccionada/abierta */
 .card.active {
     box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.15), 0 8px 16px rgba(0, 0, 0, 0.2);
     transform: scale(1.02);
@@ -153,7 +142,6 @@ body {
     line-height: 1.2;
 }
 
-/* Alineador central para el residuo */
 .card-image-container {
     flex-grow: 1;
     display: flex;
@@ -186,9 +174,7 @@ body {
     background-color: #d35400;
 }
 
-/* ==========================================
-   NUEVA SECCIÓN: DESCRIPCIÓN DE TARJETAS
-   ========================================== */
+/* Descripción oculta por defecto */
 .card-description {
     max-height: 0;
     opacity: 0;
@@ -199,41 +185,17 @@ body {
     line-height: 1.3;
     padding: 0 10px;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-    /* Transición suave para el efecto de estirado */
     transition: max-height 0.3s ease-out, opacity 0.3s ease-out, margin-top 0.3s ease-out;
 }
 
-/* Se ejecuta cuando la tarjeta tiene la clase .active */
 .card.active .card-description {
     max-height: 120px;
-    /* Altura máxima para permitir que el texto se despliegue */
     opacity: 1;
     margin-top: 15px;
 }
 
-/* Icono redondo blanco de abajo */
-.card-footer-icon {
-    background-color: white;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
-    position: absolute;
-    bottom: -15px;
-    left: calc(50% - 17.5px);
-    border: 2px solid #fff;
-}
-
-.mini-icon {
-    width: 18px;
-    height: auto;
-}
-
 /* ==========================================
-   PERSONAJE (ECOPET ORIGINAL)
+   PERSONAJE ECOPET (PC)
    ========================================== */
 .character-ecopet {
     position: absolute;
@@ -249,7 +211,7 @@ body {
 }
 
 /* ==========================================
-   BOTÓN INFERIOR ORIGINAL (ESTILO 3D)
+   BOTÓN INFERIOR (PC)
    ========================================== */
 .button-container {
     position: absolute;
@@ -282,6 +244,111 @@ body {
     transform: translateY(8px);
     box-shadow: none;
 }
+
+
+/* ==========================================
+   ¡NUEVA SECCIÓN: ADAPTACIÓN PARA CELULARES!
+   ========================================== */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+        overflow: auto;
+        /* Permite scroll total para leer descripciones largas */
+        align-items: flex-start;
+    }
+
+    .game-container {
+        height: auto;
+        min-height: calc(100vh - 20px);
+        padding: 15px 10px 85px 10px;
+        /* Colchón abajo para dar espacio al contenedor del botón fijo */
+        border: 5px solid #fff;
+    }
+
+    .board {
+        width: 100%;
+        height: auto;
+        /* Se autoajusta al tamaño de las tarjetas */
+        padding: 15px 10px;
+        border-radius: 20px;
+        overflow-y: visible;
+        /* El scroll lo manejará el body */
+    }
+
+    .main-title {
+        font-size: 1.8rem;
+        /* Reducimos el título principal */
+    }
+
+    .subtitle {
+        font-size: 0.95rem;
+        padding: 0 5px;
+    }
+
+    /* CAMBIO CLAVE: Transformamos la cuadrícula de 4 a 2 columnas */
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .card {
+        min-height: 150px;
+        padding: 10px 5px;
+    }
+
+    .card h3 {
+        font-size: 0.95rem;
+        /* Ajustado para que el texto quepa sin problemas */
+    }
+
+    .card-img {
+        max-height: 70px;
+        /* Hacemos los gráficos más compactos */
+    }
+
+    .card-description {
+        font-size: 0.8rem;
+    }
+
+    /* ACOMODAMOS A ECOPET PARA QUE NO SE SALGA */
+    .character-ecopet {
+        position: relative;
+        left: auto;
+        bottom: auto;
+        margin: 15px 0 0 0;
+        /* Lo devolvemos al flujo común abajo de la pizarra */
+        z-index: 2;
+    }
+
+    .ecopet-avatar {
+        width: 150px;
+        /* Miniatura del perrito para pantallas móviles */
+    }
+
+    /* BOTÓN FIJO ABAJO EN MÓVIL */
+    .button-container {
+        position: fixed;
+        /* Se queda estático abajo para facilitar el clic */
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: linear-gradient(transparent, #87CEEB 30%);
+        /* Efecto difuminado del color exterior */
+        padding: 15px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .btn-aprender {
+        font-size: 1.3rem;
+        /* Tamaño de texto ergonómico en celulares */
+        padding: 12px 0;
+        width: 100%;
+        max-width: 280px;
+        box-shadow: 0 5px 0 #1e7e43, 0 8px 12px rgba(0, 0, 0, 0.3);
+    }
+}
+
 
 /* ==========================================
    ANIMACIONES
