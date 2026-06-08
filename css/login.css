@@ -5,7 +5,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Arial Round', 'Comic Sans MS', sans-serif;
+    font-family: 'Arial Rounded MT Bold', 'Comic Sans MS', sans-serif;
 }
 
 body {
@@ -15,19 +15,17 @@ body {
     min-height: 100vh;
     background: #87CEEB;
     padding: 20px;
-    overflow: hidden; /* Mantiene la pantalla fija en computadoras */
+    overflow-x: hidden;
 }
 
-/* Contenedor principal para PC */
+/* Contenedor principal para PC y laptops */
 .game-container {
     width: 100%;
     max-width: 1400px;
     height: 85vh;
     min-height: 550px;
-
     background: #b6f393 url('../imagenes/fonditologin.png') no-repeat center;
     background-size: cover;
-
     border: 8px solid #fff;
     border-radius: 24px;
     display: flex;
@@ -42,18 +40,23 @@ body {
 .avatar-header {
     margin-bottom: 20px;
     z-index: 2;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
-/* El perrito flotando en PC (Controlado por CSS) */
+/* El perrito elástico (Se encoge suavemente en pantallas intermedias) */
 .ecopet-mini {
     width: 100%;
-    max-width: 450px; /* Tamaño máximo ideal para monitor */
+    max-width: calc(180px + 15vw);
+    /* Tamaño dinámico perfecto para PC/Laptop */
     height: auto;
     object-fit: contain;
+    max-height: 28vh;
     animation: float-dog 3.5s ease-in-out infinite;
 }
 
-/* Caja de la pregunta en PC */
+/* Caja de la pregunta con tipografía adaptativa */
 .question-box {
     background: white;
     padding: 15px 40px;
@@ -62,12 +65,15 @@ body {
     box-shadow: 0 6px 0 rgba(0, 0, 0, 0.05);
     text-align: center;
     z-index: 1;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
+    max-width: 90%;
 }
 
 .question-box h2 {
-    font-size: 2.2rem;
+    font-size: calc(1.3rem + 1vw);
+    /* Escala según el monitor */
     color: #1e3799;
+    line-height: 1.2;
 }
 
 .highlight-orange {
@@ -78,15 +84,15 @@ body {
     color: #0a3d62;
 }
 
-/* Caja de Texto en PC */
+/* Caja de Texto Inteligente */
 .input-box {
     background: white;
     width: 90%;
-    max-width: 750px;
-    padding: 25px;
+    max-width: 650px;
+    padding: 20px;
     border-radius: 25px;
     border: 5px dashed #ff9f43;
-    margin-bottom: 50px;
+    margin-bottom: 35px;
     box-shadow: 0 8px 0 rgba(0, 0, 0, 0.05);
 }
 
@@ -94,24 +100,27 @@ body {
     width: 100%;
     border: none;
     outline: none;
-    font-size: 2.3rem;
+    font-size: calc(1.4rem + 1vw);
     text-align: center;
     color: #4a4a4a;
     font-weight: bold;
+    background: transparent;
 }
 
-/* Botón Continuar en PC */
+/* Botón Continuar en PC/Laptop */
 .btn-continuar {
+    display: inline-block;
     background-color: #ffb300;
     color: white;
-    font-size: 2.4rem;
+    font-size: calc(1.2rem + 1vw);
     font-weight: bold;
-    padding: 15px 90px;
+    padding: 12px 80px;
     border-radius: 50px;
     border: 4px solid #fff;
     box-shadow: 0 8px 0 #d39400, 0 12px 20px rgba(0, 0, 0, 0.3);
     cursor: pointer;
-    transition: all 0.1s;
+    transition: transform 0.1s, box-shadow 0.1s;
+    white-space: nowrap;
 }
 
 .btn-continuar:hover {
@@ -124,6 +133,24 @@ body {
     box-shadow: none;
 }
 
+/* ==========================================
+   PUNTO INTERMEDIO: LAPTOPS PEQUEÑAS Y TABLETS
+   ========================================== */
+@media (max-width: 1024px) {
+    .game-container {
+        padding: 30px 20px;
+        height: 80vh;
+    }
+
+    .input-box {
+        margin-bottom: 25px;
+        padding: 15px;
+    }
+
+    .btn-continuar {
+        padding: 12px 60px;
+    }
+}
 
 /* ==========================================
    ¡SECCIÓN RESPONSIVA PARA CELULARES!
@@ -131,17 +158,18 @@ body {
 @media (max-width: 768px) {
     body {
         padding: 10px;
-        overflow: auto; /* Permite scroll si el teclado del celular tapa el botón */
-        align-items: flex-start; 
+        align-items: flex-start;
+        /* Evita recortes si la pantalla vertical es corta */
     }
 
     .game-container {
-        height: auto; 
-        min-height: calc(100vh - 20px); 
-        padding: 25px 15px; 
-        border: 5px solid #fff; 
-        justify-content: center; 
-        gap: 15px; 
+        height: auto;
+        min-height: calc(100vh - 20px);
+        padding: 25px 15px;
+        border: 5px solid #fff;
+        border-radius: 16px;
+        justify-content: center;
+        gap: 10px;
     }
 
     .avatar-header {
@@ -149,39 +177,41 @@ body {
     }
 
     .ecopet-mini {
-        max-width: 300px; /* Reducido proporcionalmente para el celular */
-        height: auto;
-        max-height: auto; 
+        max-width: 140px;
+        /* Tamaño ideal y controlado para que no estorbe al teclado */
+        max-height: 20vh;
     }
 
     .question-box {
-        padding: 12px 20px; 
-        margin-bottom: 15px;
-        width: 100%; 
-        max-width: 320px; 
+        padding: 12px 20px;
+        margin-bottom: 10px;
+        width: 100%;
+        max-width: 300px;
+        border: 3px solid #b2ec5d;
     }
 
     .question-box h2 {
-        font-size: 1.4rem; 
+        font-size: 1.3rem;
     }
 
     .input-box {
-        width: 100%; 
-        max-width: 320px; 
-        padding: 15px; 
-        margin-bottom: 25px; 
+        width: 100%;
+        max-width: 300px;
+        padding: 12px;
+        margin-bottom: 20px;
         border: 4px dashed #ff9f43;
+        border-radius: 20px;
     }
 
     .input-box input {
-        font-size: 1.6rem; 
+        font-size: 1.5rem;
     }
 
     .btn-continuar {
-        font-size: 1.6rem; 
-        padding: 12px 0; 
-        width: 100%; 
-        max-width: 260px; 
+        font-size: 1.5rem;
+        padding: 10px 0;
+        width: 100%;
+        max-width: 240px;
         box-shadow: 0 5px 0 #d39400, 0 8px 12px rgba(0, 0, 0, 0.3);
     }
 
@@ -190,15 +220,17 @@ body {
     }
 }
 
-
 /* ==========================================
    ANIMACIONES
    ========================================== */
 @keyframes float-dog {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0);
     }
+
     50% {
-        transform: translateY(-15px);
+        transform: translateY(-12px);
     }
 }

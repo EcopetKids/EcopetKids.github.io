@@ -5,7 +5,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Arial Round', 'Comic Sans MS', sans-serif;
+    font-family: 'Arial Rounded MT Bold', 'Comic Sans MS', sans-serif;
 }
 
 body {
@@ -18,16 +18,14 @@ body {
     padding: 20px;
 }
 
-/* Contenedor principal para computadoras */
+/* Contenedor principal adaptable */
 .game-container {
     width: 100%;
     max-width: 1400px;
     height: 85vh;
     min-height: 550px;
-
     background: url('../imagenes/fondoinicio.png') no-repeat center;
     background-size: cover;
-
     border: 8px solid #fff;
     border-radius: 24px;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
@@ -40,25 +38,28 @@ body {
     text-align: center;
 }
 
-/* Título */
+/* Título con escalado elástico fluido */
 .logo-title {
-    font-size: 5.5rem;
+    font-size: calc(2.5rem + 3vw);
+    /* Escala suavemente entre pantallas */
     color: #ff9d00;
     text-shadow: 3px 3px 0 #fff, -3px -3px 0 #fff, 3px -3px 0 #fff, -3px 3px 0 #fff, 0 6px 10px rgba(0, 0, 0, 0.15);
     letter-spacing: 4px;
     animation: float 3s ease-in-out infinite;
+    line-height: 1.1;
+    margin-bottom: 10px;
 }
 
 /* Contenido principal */
 .main-content h2 {
     color: #1d3557;
-    font-size: 2.3rem;
+    font-size: calc(1.4rem + 1vw);
     margin-bottom: 10px;
 }
 
 .main-content p {
     color: #1d3557;
-    font-size: 1.5rem;
+    font-size: calc(1rem + 0.5vw);
     font-weight: bold;
 }
 
@@ -66,33 +67,35 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    margin-bottom: 20px;
+    margin: 15px 0;
 }
 
-/* Avatar del perrito en computadora */
+/* Avatar del perrito adaptable */
 .ecopet-avatar {
     width: 100%;
-    max-width: 280px; /* Tamaño máximo controlado */
+    max-width: 260px;
     height: auto;
     object-fit: contain;
     max-height: 25vh;
     animation: float-dog 3.5s ease-in-out infinite;
 }
 
-/* Botón Jugar */
+/* Botón Jugar con dimensiones máximas controladas */
 .btn-jugar {
     display: inline-block;
     background-color: #4cd137;
     color: white;
-    font-size: 2.5rem;
+    font-size: calc(1.3rem + 1vw);
     font-weight: bold;
-    padding: 15px 100px;
+    padding: 12px 80px;
     border-radius: 50px;
     text-decoration: none;
     border: 4px solid #fff;
     box-shadow: 0 8px 0 #359824, 0 12px 20px rgba(0, 0, 0, 0.3);
     transition: transform 0.1s, box-shadow 0.1s;
     cursor: pointer;
+    max-width: 100%;
+    white-space: nowrap;
 }
 
 .btn-jugar:hover {
@@ -105,35 +108,48 @@ body {
     box-shadow: none;
 }
 
+/* ==========================================
+   PUNTO INTERMEDIO: TABLETS Y LAPTOPS
+   ========================================== */
+@media (max-width: 1024px) {
+    .game-container {
+        height: 80vh;
+        padding: 30px;
+    }
+
+    .btn-jugar {
+        padding: 12px 50px;
+    }
+}
 
 /* ==========================================
-   ¡NUEVA SECCIÓN: ADAPTACIÓN PARA CELULARES!
+   OPTIMIZACIÓN EXCLUSIVA PARA CELULARES
    ========================================== */
 @media (max-width: 768px) {
     body {
         padding: 10px;
-        align-items: flex-start; /* Evita recortes si la pantalla vertical es muy corta */
+        align-items: flex-start;
     }
 
     .game-container {
-        height: auto; 
-        min-height: calc(100vh - 20px); /* Usa el alto máximo de la pantalla móvil */
-        padding: 30px 15px;
+        height: auto;
+        min-height: calc(100vh - 20px);
+        padding: 25px 15px;
         border: 5px solid #fff;
-        justify-content: center; /* Distribución equilibrada */
-        gap: 20px; /* Espaciado automático entre los bloques */
+        border-radius: 16px;
+        justify-content: center;
+        gap: 15px;
     }
 
     .logo-title {
-        font-size: 2.4rem; /* Reducido para que entre fluido en una línea */
+        font-size: 2.2rem;
         letter-spacing: 1px;
-        line-height: 1.2;
         text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 4px 6px rgba(0, 0, 0, 0.15);
     }
 
     .main-content h2 {
-        font-size: 1.3rem; /* Evita bloques enormes de texto */
-        line-height: 1.4;
+        font-size: 1.3rem;
+        line-height: 1.3;
     }
 
     .main-content p {
@@ -142,19 +158,19 @@ body {
     }
 
     .character-zone {
-        margin-bottom: 10px;
+        margin: 5px 0;
     }
 
     .ecopet-avatar {
-        max-width: 140px; /* Escala perfecta para la interfaz móvil */
-        max-height: 20vh;
+        max-width: 130px;
+        max-height: 22vh;
     }
 
     .btn-jugar {
-        font-size: 1.6rem;
-        padding: 12px 0; /* Eliminamos el padding rígido horizontal */
+        font-size: 1.5rem;
+        padding: 10px 0;
         width: 100%;
-        max-width: 260px; /* Ancho ergonómico para el pulgar */
+        max-width: 250px;
         box-shadow: 0 5px 0 #359824, 0 8px 12px rgba(0, 0, 0, 0.3);
     }
 
@@ -163,24 +179,29 @@ body {
     }
 }
 
-
 /* ==========================================
    ANIMACIONES
    ========================================== */
 @keyframes float {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0);
     }
+
     50% {
-        transform: translateY(-10px);
+        transform: translateY(-8px);
     }
 }
 
 @keyframes float-dog {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0);
     }
+
     50% {
-        transform: translateY(-15px);
+        transform: translateY(-12px);
     }
 }
