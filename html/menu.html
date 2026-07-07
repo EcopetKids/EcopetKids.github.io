@@ -1,11 +1,24 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EcoPet - Menú Principal</title>
     <link rel="stylesheet" href="../css/menu-principal.css">
+    <style>
+        /* Agregado cursor interactivo para indicar que es clickeable el avatar */
+        .character-zone {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .character-zone:hover {
+            transform: scale(1.03);
+        }
+    </style>
 </head>
+
 <body>
     <div class="game-container">
         <header class="menu-header">
@@ -14,9 +27,11 @@
         </header>
 
         <div class="menu-content">
-            <div class="character-zone">
-                <img src="../imagenes/cachorrowin.png" alt="EcoPet Avatar" class="ecopet-avatar">
-                <div class="menu-bubble">¡Hola! ¿Qué haremos hoy por el planeta? 🌍🐾</div>
+            <!-- Al dar clic al perrito redirige a la pantalla vestidor -->
+            <div class="character-zone" onclick="location.href='vestidor.html'">
+                <img src="../imagenes/cachorrowin.png" alt="EcoPet Avatar" class="ecopet-avatar" id="menu-avatar-pet">
+                <div class="menu-bubble">¡Hola! ¿Qué haremos hoy por el planeta? 🌍🐾 <br><span
+                        style="font-size:0.75rem; color:#4caf50;">(Hazme clic para cambiar de ropa)</span></div>
             </div>
 
             <nav class="menu-buttons">
@@ -35,5 +50,32 @@
             </nav>
         </div>
     </div>
+
+    <script>
+        // Mapear los trajes correspondientes en el menú
+        const rutasMenuImagenes = {
+            'base': '../imagenes/cachorrowin.png',
+            'collar': '../imagenes/cachorrocollar.png',
+            'gorra': '../imagenes/cachorrogorrita.png',
+            'lentes': '../imagenes/cachorrolentes.png',
+            'mochila': '../imagenes/cachorromochila.png',
+            'botas': '../imagenes/cachorrobotas.png',
+            'panuleta': '../imagenes/cachorrobufanda.png'   
+        };
+
+        function verificarRopaEquipada() {
+            // Lee qué objeto guardó el vestidor
+            const equipado = localStorage.getItem('ecopet_equipado') || 'base';
+            const avatarImg = document.getElementById('menu-avatar-pet');
+
+            if (avatarImg && rutasMenuImagenes[equipado]) {
+                avatarImg.src = rutasMenuImagenes[equipado];
+            }
+        }
+
+        // Ejecutar la comprobación cada vez que se cargue la ventana de inicio
+        window.onload = verificarRopaEquipada;
+    </script>
 </body>
+
 </html>
