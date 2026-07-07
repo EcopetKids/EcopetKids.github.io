@@ -6,6 +6,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EcoPet - ¡A Clasificar!</title>
     <link rel="stylesheet" href="../css/juego-drag.css">
+    <style>
+        /* Estilos base para la zona de victoria inspirados en el juego de memoria */
+        .character-zone {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 20px auto;
+            animation: popIn 0.5s ease forwards;
+        }
+
+        .character-zone.show-win {
+            display: flex;
+        }
+
+        .win-bubble {
+            background: #fff;
+            padding: 15px;
+            border-radius: 20px;
+            border: 2px solid #4CAF50;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+        }
+
+        .ecopet-avatar-win {
+            max-width: 150px;
+            height: auto;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Contenedor del pie de página ajustado para centrar el botón */
+        .button-container-footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        /* Estilo personalizado y bonito para el botón de ganar */
+        .btn-ready-win {
+            display: inline-block;
+            background: linear-gradient(135deg, #4ecdc4, #4caf50);
+            color: white;
+            padding: 14px 28px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-ready-win:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.6);
+            color: white;
+        }
+
+        .btn-ready-win:active {
+            transform: translateY(-1px);
+        }
+    </style>
 </head>
 
 <body>
@@ -18,7 +98,7 @@
             <div class="monedas">🪙 <span id="puntos">150</span></div>
         </div>
 
-        <div class="game-field">
+        <div class="game-field" id="game-field-zone">
             <div class="mascota-status">
                 <img src="../imagenes/perrito pensativo.png" alt="EcoPet" id="ecopet-emocion">
             </div>
@@ -36,7 +116,12 @@
             <div class="popup incorrect" id="pop-mal" style="display: none;">Intenta nuevamente 💔 -1</div>
         </div>
 
-        <div class="bins-container">
+        <div class="character-zone" id="win-zone">
+            <div class="win-bubble">¡Increíble! ¡Tienes una mente brillante! 🐾 mentalidad eco-activada.</div>
+            <img src="../imagenes/cachorrowin.png" alt="¡Ganaste!" class="ecopet-avatar-win">
+        </div>
+
+        <div class="bins-container" id="bins-container-zone">
             <div class="bin bin-azul" data-target="papel">
                 <div class="bin-image-container">
                     <img src="../imagenes/papel_carton.png" alt="Papel y Cartón" class="bin-img">
@@ -67,7 +152,8 @@
         </div>
 
         <div class="button-container-footer">
-            <a href="menu.html" id="btn-siguiente-pantalla" class="btn-siguiente" style="display: none;">Siguiente Pantalla -></a>
+            <a href="menu.html" id="btn-siguiente-pantalla" class="btn-siguiente" style="display: none;">Siguiente
+                Pantalla -></a>
         </div>
     </div>
 
@@ -92,19 +178,25 @@
         const btnReintentar = document.getElementById('btn-reintentar');
         const btnSiguiente = document.getElementById('btn-siguiente-pantalla');
 
+        const winZone = document.getElementById('win-zone');
+        const gameFieldZone = document.getElementById('game-field-zone');
+        const binsContainerZone = document.getElementById('bins-container-zone');
+
         let puntos = 150;
         let vidas = 3;
         let aciertos = 0;
         let totalParaGanar = 5;
         let objetoActual = {};
-        let objetoSeleccionadoMovil = false; // Estado de selección para soporte móvil táctil
+        let objetoSeleccionadoMovil = false;
+
+        // --- CONFIGURACIÓN DE AUDIO ---
+        const audioCorrecto = new Audio('../music/Correcto.mp3');
+        const audioMal = new Audio('../music/Mal.mp3');
+        const audioCelebracion = new Audio('../music/celebración.mp3');
 
         function cargarNuevoObjeto() {
             if (aciertos >= totalParaGanar) {
-                nombreElement.innerText = "¡Misión Cumplida! 🌟";
-                objetoElement.style.display = 'none';
-                btnReintentar.style.display = 'none';
-                btnSiguiente.style.display = 'inline-block';
+                mostrarVictoria();
                 return;
             }
 
@@ -114,12 +206,33 @@
             objetoElement.innerText = objetoActual.info.split(' ')[0];
             nombreElement.innerText = objetoActual.info.split(' ').slice(1).join(' ');
             objetoElement.style.display = 'block';
-            objetoElement.classList.remove('selected-item'); // Limpia selección móvil
+            objetoElement.classList.remove('selected-item');
             objetoSeleccionadoMovil = false;
             objetoElement.setAttribute('data-tipo', objetoActual.tipo);
 
             btnReintentar.style.display = 'none';
             btnSiguiente.style.display = 'none';
+        }
+
+        function mostrarVictoria() {
+            // Reproduce la música de celebración al ganar
+            audioCelebracion.currentTime = 0;
+            audioCelebracion.play();
+
+            // Atenúa elementos del juego
+            gameFieldZone.style.opacity = '0.15';
+            binsContainerZone.style.opacity = '0.15';
+            objetoElement.style.display = 'none';
+            btnReintentar.style.display = 'none';
+
+            // Muestra la animación de victoria
+            winZone.classList.add('show-win');
+
+            // Modifica y muestra el botón centrado abajo con un aspecto profesional
+            btnSiguiente.innerText = "VOLVER AL MENÚ";
+            btnSiguiente.className = "btn-ready-win";
+            btnSiguiente.style.display = 'inline-block';
+            btnSiguiente.href = 'menu.html';
         }
 
         function actualizarVidas() {
@@ -130,23 +243,32 @@
         }
 
         function reiniciarJuego() {
+            audioCorrecto.pause();
+            audioMal.pause();
+            audioCelebracion.pause();
+
             puntos = 150;
             vidas = 3;
             aciertos = 0;
             puntosTxt.innerText = puntos;
             barraProgreso.style.width = '0%';
+
+            gameFieldZone.style.opacity = '1';
+            binsContainerZone.style.opacity = '1';
+            winZone.classList.remove('show-win');
+
             actualizarVidas();
             cargarNuevoObjeto();
         }
 
-        /* --- MECÁNICA MÓVIL: SOPORTE DE TOQUES --- */
+        /* --- MECÁNICA MÓVIL --- */
         objetoElement.addEventListener('click', () => {
             if (vidas <= 0 || aciertos >= totalParaGanar) return;
             objetoSeleccionadoMovil = !objetoSeleccionadoMovil;
             objetoElement.classList.toggle('selected-item', objetoSeleccionadoMovil);
         });
 
-        /* --- MECÁNICA ESCRITORIO: DRAG & DROP --- */
+        /* --- MECÁNICA ESCRITORIO --- */
         objetoElement.addEventListener('dragstart', (e) => {
             e.dataTransfer.setData('text/plain', e.target.id);
         });
@@ -154,7 +276,6 @@
         botes.forEach(bote => {
             bote.addEventListener('dragover', (e) => e.preventDefault());
 
-            // Función unificada para validar la respuesta (Drag o Tap)
             function procesarRespuesta() {
                 if (vidas <= 0 || aciertos >= totalParaGanar) return;
 
@@ -168,6 +289,9 @@
                     const porcentaje = (aciertos / totalParaGanar) * 100;
                     barraProgreso.style.width = `${porcentaje}%`;
 
+                    audioCorrecto.currentTime = 0;
+                    audioCorrecto.play();
+
                     mostrarPopup('pop-bien');
                     objetoElement.style.display = 'none';
                     setTimeout(cargarNuevoObjeto, 1000);
@@ -176,6 +300,9 @@
                     vidas--;
                     puntosTxt.innerText = puntos;
                     actualizarVidas();
+
+                    audioMal.currentTime = 0;
+                    audioMal.play();
 
                     mostrarPopup('pop-mal');
 
@@ -188,13 +315,11 @@
                 }
             }
 
-            // Evento al soltar (PC)
             bote.addEventListener('drop', (e) => {
                 e.preventDefault();
                 procesarRespuesta();
             });
 
-            // Evento al tocar el bote (Móvil)
             bote.addEventListener('click', () => {
                 if (objetoSeleccionadoMovil) {
                     procesarRespuesta();
