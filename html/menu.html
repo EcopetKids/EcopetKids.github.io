@@ -16,6 +16,108 @@
         .character-zone:hover {
             transform: scale(1.03);
         }
+
+        /* --- ESTILOS RESPONSIVE PARA EL SUBMENÚ DE REDES (MODAL) --- */
+        .modal-redes {
+            display: none;
+            /* Oculto por defecto */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-redes.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 360px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            transform: scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-redes.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 12px;
+            right: 15px;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .close-modal:hover {
+            color: #ff5252;
+        }
+
+        .modal-title {
+            color: #2e7d32;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+
+        .social-links-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: transform 0.2s, filter 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-social:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        /* Colores corporativos de las redes */
+        .btn-facebook {
+            background: #1877F2;
+        }
+
+        .btn-instagram {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+
+        .btn-tiktok {
+            background: #000000;
+        }
+
+        .social-icon {
+            font-size: 1.4rem;
+        }
     </style>
 </head>
 
@@ -27,7 +129,6 @@
         </header>
 
         <div class="menu-content">
-            <!-- Al dar clic al perrito redirige a la pantalla vestidor -->
             <div class="character-zone" onclick="location.href='vestidor.html'">
                 <img src="../imagenes/cachorrowin.png" alt="EcoPet Avatar" class="ecopet-avatar" id="menu-avatar-pet">
                 <div class="menu-bubble">¡Hola! ¿Qué haremos hoy por el planeta? 🌍🐾 <br><span
@@ -47,7 +148,33 @@
                 <a href="tienda.html" class="btn-menu btn-tienda">
                     <span class="icon">🏪</span> TIENDA
                 </a>
+                <button class="btn-menu btn-aprender"
+                    style="cursor: pointer; text-align: left; background-color: #ff9800;"
+                    onclick="toggleRedesModal(true)">
+                    <span class="icon">🌐</span> REDES
+                </button>
             </nav>
+        </div>
+    </div>
+
+    <div id="modal-redes" class="modal-redes" onclick="toggleRedesModal(false)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-modal" onclick="toggleRedesModal(false)">✕</button>
+            <h3 class="modal-title">¡Siguenos en Redes! 🐾</h3>
+
+            <div class="social-links-grid">
+                <a href="https://www.facebook.com/share/1CCriJhteN/" target="_blank" class="btn-social btn-facebook">
+                    <span class="social-icon">📘</span> Facebook
+                </a>
+                <a href="https://www.instagram.com/ecopetkids?igsh=Mjc4aTU1cnMzZnF6" target="_blank"
+                    class="btn-social btn-instagram">
+                    <span class="social-icon">📸</span> Instagram
+                </a>
+                <a href="https://www.tiktok.com/@ecopetkids?_r=1&_t=ZS-96zVKg8aXWn" target="_blank"
+                    class="btn-social btn-tiktok">
+                    <span class="social-icon">🎵</span> TikTok
+                </a>
+            </div>
         </div>
     </div>
 
@@ -60,7 +187,7 @@
             'lentes': '../imagenes/cachorrolentes.png',
             'mochila': '../imagenes/cachorromochila.png',
             'botas': '../imagenes/cachorrobotas.png',
-            'panuleta': '../imagenes/cachorrobufanda.png'   
+            'panuleta': '../imagenes/cachorrobufanda.png'
         };
 
         function verificarRopaEquipada() {
@@ -70,6 +197,16 @@
 
             if (avatarImg && rutasMenuImagenes[equipado]) {
                 avatarImg.src = rutasMenuImagenes[equipado];
+            }
+        }
+
+        // Función para abrir y cerrar el menú de redes
+        function toggleRedesModal(mostrar) {
+            const modal = document.getElementById('modal-redes');
+            if (mostrar) {
+                modal.classList.add('active');
+            } else {
+                modal.classList.remove('active');
             }
         }
 

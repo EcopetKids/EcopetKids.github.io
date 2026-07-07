@@ -6,14 +6,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EcoPet - Recolectando Plásticos</title>
     <link rel="stylesheet" href="../css/mision-juego.css">
+    <style>
+        /* --- ESTILOS ADICIONALES PARA EL AVISO FLOTANTE DE ERROR --- */
+        .error-toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background-color: #ff5252;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 82, 82, 0.4);
+            z-index: 999;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+            opacity: 0;
+            pointer-events: none;
+            text-align: center;
+            font-size: 0.95rem;
+            width: 90%;
+            max-width: 380px;
+        }
+
+        .error-toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    </style>
 </head>
 
 <body>
+    <div id="error-alert" class="error-toast">¡Eso no es plástico! Busca envases, bolsas o botellas. ❌</div>
+
+    <audio id="musica-fondo" src="../music/musica_juego.mp3" loop></audio>
+    <audio id="snd-click" src="../music/Correcto.mp3"></audio>
+    <audio id="snd-error" src="../music/Mal.mp3"></audio>
+    <audio id="snd-victoria" src="../music/celebración.mp3"></audio>
+
     <div class="game-container">
         <div class="top-bar">
             <div class="title-block">
                 <h2>Misión Plásticos</h2>
-                <p class="mission-instruction">¡Ayuda a EcoPet! Haz clic únicamente sobre los 5 residuos plásticos para limpiar la pradera.</p>
+                <p class="mission-instruction">¡Ayuda a EcoPet! Haz clic únicamente sobre los 5 residuos plásticos para
+                    limpiar la pradera.</p>
             </div>
             <div class="counter-box">
                 <span id="progress-text">0 / 5</span>
@@ -33,7 +69,8 @@
 
         <div class="character-zone" id="win-zone">
             <div class="win-bubble">¡Guau! ¡Lo logramos! ¡Vamos a la tienda! 🐾🎉</div>
-            <img src="../imagenes/cachorrowin.png" alt="¡Cachorro Ganador!" class="ecopet-avatar-win">
+            <img src="../imagenes/cachorrowin.png" alt="¡Cachorro Ganador!" class="ecopet-avatar-win"
+                id="menu-avatar-pet">
         </div>
 
         <button id="btn-completar" class="btn-disabled" disabled>COMPLETAR MISIÓN</button>
@@ -41,29 +78,90 @@
 
     <script>
         let plasticCount = 0;
+        let musicaIniciada = false;
+
+        const rutasMenuImagenes = {
+            'base': '../imagenes/cachorrowin.png',
+            'collar': '../imagenes/cachorrocollar.png',
+            'gorra': '../imagenes/cachorrogorrita.png',
+            'lentes': '../imagenes/cachorrolentes.png',
+            'mochila': '../imagenes/cachorromochila.png',
+            'botas': '../imagenes/cachorrobotas.png',
+            'panuleta': '../imagenes/cachorrobufanda.png'
+        }
+
+        function iniciarMusica() {
+            if (!musicaIniciada) {
+                const musica = document.getElementById('musica-fondo');
+                musica.volume = 0.2; // Música ambiental suave
+                musica.play()
+                    .then(() => { musicaIniciada = true; })
+                    .catch(err => console.log("Interacción necesaria para reproducir audio ambiental."));
+            }
+        }
 
         function collectPlastic(element) {
+            iniciarMusica();
+
             if (!element.classList.contains('collected')) {
                 element.classList.add('collected');
-                element.style.visibility = 'hidden'; 
+                element.style.visibility = 'hidden';
+
+                // Sonido de acierto (Correcto.mp3)
+                const sndClick = document.getElementById('snd-click');
+                sndClick.currentTime = 0;
+                sndClick.play().catch(e => console.log("Audio interactivo bloqueado"));
+
                 plasticCount++;
                 document.getElementById('progress-text').innerText = `${plasticCount} / 5`;
 
                 if (plasticCount >= 5) {
+                    const musica = document.getElementById('musica-fondo');
+                    musica.pause();
+
+                    // Sonido de victoria (celebración.mp3)
+                    const sndVictoria = document.getElementById('snd-victoria');
+                    sndVictoria.currentTime = 0;
+                    sndVictoria.play().catch(e => console.log("Audio de victoria bloqueado"));
+
                     const btn = document.getElementById('btn-completar');
                     btn.removeAttribute('disabled');
                     btn.className = 'btn-ready';
                     btn.onclick = function () { window.location.href = 'menu.html'; }
 
                     document.getElementById('win-zone').classList.add('show-win');
-                    document.getElementById('waste-field').style.opacity = '0.2'; 
+                    document.getElementById('waste-field').style.opacity = '0.2';
                 }
             }
         }
 
         function collectWrong() {
-            alert("¡Eso no es plástico! Busca solo envases, bolsas o botellas plásticas.");
+            iniciarMusica();
+
+            // REPRODUCIR SONIDO DE ERROR (Mal.mp3) - Ahora suena al instante sin bloqueos
+            const sndError = document.getElementById('snd-error');
+            sndError.currentTime = 0;
+            sndError.play().catch(e => console.log("Audio de error bloqueado"));
+
+            // Mostrar el aviso visual flotante en pantalla
+            const toast = document.getElementById('error-alert');
+            toast.classList.add('show');
+
+            // Quitar el cartel automáticamente después de 2.5 segundos
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
         }
+
+        function verificarRopaEquipada() {
+            const equipado = localStorage.getItem('ecopet_equipado') || 'base';
+            const avatarImg = document.getElementById('menu-avatar-pet');
+            if (avatarImg && rutasMenuImagenes[equipado]) {
+                avatarImg.src = rutasMenuImagenes[equipado];
+            }
+        }
+
+        window.onload = verificarRopaEquipada;
     </script>
 </body>
 

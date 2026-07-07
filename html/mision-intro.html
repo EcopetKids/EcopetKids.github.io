@@ -13,7 +13,8 @@
         <h1 class="header-title">MISIÓN DEL DÍA</h1>
 
         <div class="game-content">
-            <img src="../imagenes/cachorrowin.png" alt="EcoPet" class="ecopet-avatar">
+
+            <img src="../imagenes/cachorrowin.png" alt="EcoPet" class="ecopet-avatar" id="menu-avatar-pet">
 
             <div class="scroll-container">
                 <div class="scroll-content">
@@ -28,10 +29,36 @@
                     <p class="encouragement">¡Tú puedes! Ayúdame a mantener limpio el planeta 💚</p>
                 </div>
             </div>
-        </div>
 
-        <a href="mision-juego.html" class="btn-iniciar">INICIAR MISIÓN</a>
+        </div> <a href="mision-juego.html" class="btn-iniciar">INICIAR MISIÓN</a>
     </div>
+
+    <script>
+        // Diccionario con las rutas de las imágenes de tu perrito con sus trajes
+        const rutasMenuImagenes = {
+            'base': '../imagenes/cachorrowin.png',
+            'collar': '../imagenes/cachorrocollar.png',
+            'gorra': '../imagenes/cachorrogorrita.png',
+            'lentes': '../imagenes/cachorrolentes.png',
+            'mochila': '../imagenes/cachorromochila.png',
+            'botas': '../imagenes/cachorrobotas.png',
+            'panuleta': '../imagenes/cachorrobufanda.png'
+        };
+
+        function verificarRopaEquipada() {
+            // Obtiene la prenda activa guardada en el vestidor (si no hay, usa la 'base')
+            const equipado = localStorage.getItem('ecopet_equipado') || 'base';
+            const avatarImg = document.getElementById('menu-avatar-pet');
+
+            // Si el elemento existe y la ruta es válida, cambia la imagen
+            if (avatarImg && rutasMenuImagenes[equipado]) {
+                avatarImg.src = rutasMenuImagenes[equipado];
+            }
+        }
+
+        // Ejecuta la comprobación automáticamente al cargar la pantalla
+        window.onload = verificarRopaEquipada;
+    </script>
 </body>
 
 </html>
