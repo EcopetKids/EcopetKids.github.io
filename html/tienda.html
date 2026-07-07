@@ -20,7 +20,7 @@
             </div>
             <div class="stat-box">
                 <p>Monedas recolectadas</p>
-                <div class="badge">🪙 <span id="saldo-monedas">350</span> / 500</div>
+                <div class="badge">🪙 <span id="saldo-monedas">1000</span> / 1000</div>
             </div>
         </div>
 
@@ -31,19 +31,41 @@
                     <h4>Collar ecológicos</h4>
                     <div class="item-img">📿</div>
                     <p class="item-description">Hecho con semillas recicladas del bosque.</p>
-                    <button class="btn-buy" onclick="buyItem(100, this, event)">🪙 100</button>
+                    <button class="btn-buy" id="btn-collar" onclick="buyItem(100, 'collar', this, event)">🪙
+                        100</button>
                 </div>
                 <div class="shop-item" onclick="toggleDescription(this, event)">
                     <h4>Gorra azul</h4>
                     <div class="item-img">🧢</div>
                     <p class="item-description">Protección solar con estilo 100% plástico marino.</p>
-                    <button class="btn-buy" onclick="buyItem(120, this, event)">🪙 120</button>
+                    <button class="btn-buy" id="btn-gorra" onclick="buyItem(120, 'gorra', this, event)">🪙 120</button>
                 </div>
                 <div class="shop-item" onclick="toggleDescription(this, event)">
                     <h4>Lentes recicladores</h4>
                     <div class="item-img">🕶️</div>
                     <p class="item-description">Diseño moderno fabricado con vidrio reutilizado.</p>
-                    <button class="btn-buy" onclick="buyItem(150, this, event)">🪙 150</button>
+                    <button class="btn-buy" id="btn-lentes" onclick="buyItem(150, 'lentes', this, event)">🪙
+                        150</button>
+                </div>
+                <div class="shop-item" onclick="toggleDescription(this, event)">
+                    <h4>Mochila Solar</h4>
+                    <div class="item-img">🎒</div>
+                    <p class="item-description">Guarda sus juguetes mientras absorbe energía limpia.</p>
+                    <button class="btn-buy" id="btn-mochila" onclick="buyItem(180, 'mochila', this, event)">🪙
+                        180</button>
+                </div>
+                <div class="shop-item" onclick="toggleDescription(this, event)">
+                    <h4>Botas de Aventura</h4>
+                    <div class="item-img">🥾</div>
+                    <p class="item-description">Hechas de caucho de llantas recicladas para todo terreno.</p>
+                    <button class="btn-buy" id="btn-botas" onclick="buyItem(200, 'botas', this, event)">🪙 200</button>
+                </div>
+                <div class="shop-item" onclick="toggleDescription(this, event)">
+                    <h4>Pañoleta Eco</h4>
+                    <div class="item-img">🧣</div>
+                    <p class="item-description">Tejida a mano con fibras de algodón orgánico rescatado.</p>
+                    <button class="btn-buy" id="btn-panuleta" onclick="buyItem(80, 'panuleta', this, event)">🪙
+                        80</button>
                 </div>
             </div>
             <p class="footer-msg">¡Luce genial y ecoamigable! 🍃</p>
@@ -51,27 +73,59 @@
     </div>
 
     <script>
-        let saldo = 350;
+        // Declaramos las variables globalmente para que todas las funciones accedan a ellas
+        let saldo;
+        let comprasRealizadas;
 
-        function buyItem(costo, buttonElement, event) {
-            // Evita que al dar click al botón se cierre o abra la descripción
+        // Ejecutar todo una vez que el DOM esté completamente cargado
+        window.onload = function () {
+            // 1. Sistema dinámico de Saldo
+            saldo = 1000 || 1000;
+            document.getElementById('saldo-monedas').innerText = saldo;
+
+            // 2. Cargar ítems ya comprados
+            comprasRealizadas = JSON.parse(localStorage.getItem('ecopet_compras')) || {};
+
+            // 3. Verificar los botones comprados
+            verificarComprados();
+        };
+
+        function verificarComprados() {
+            for (const itemId in comprasRealizadas) {
+                if (comprasRealizadas[itemId]) {
+                    const btn = document.getElementById(`btn-${itemId}`);
+                    if (btn) cambiarBotonComprado(btn);
+                }
+            }
+        }
+
+        function buyItem(costo, idObjeto, buttonElement, event) {
             event.stopPropagation();
 
             if (saldo >= costo) {
                 saldo -= costo;
+                localStorage.setItem('ecopet_saldo', saldo);
                 document.getElementById('saldo-monedas').innerText = saldo;
-                buttonElement.innerText = "¡Comprado!";
-                buttonElement.style.background = "#7f8c8d";
-                buttonElement.style.boxShadow = "none";
-                buttonElement.disabled = true;
-                alert("¡Excelente adquisición para tu EcoPet!");
+
+                // Guardar compra del artículo específico
+                comprasRealizadas[idObjeto] = true;
+                localStorage.setItem('ecopet_compras', JSON.stringify(comprasRealizadas));
+
+                cambiarBotonComprado(buttonElement);
+                alert("¡Excelente adquisición para tu EcoPet! Pruébatelo en el vestidor desde el menú principal.");
             } else {
                 alert("No tienes suficientes monedas. ¡Sigue reciclando!");
             }
         }
 
+        function cambiarBotonComprado(elementoBtn) {
+            elementoBtn.innerText = "¡Comprado!";
+            elementoBtn.style.background = "#7f8c8d";
+            elementoBtn.style.boxShadow = "none";
+            elementoBtn.disabled = true;
+        }
+
         function toggleDescription(cardElement, event) {
-            // Alterna la clase 'active' en la tarjeta seleccionada
             cardElement.classList.toggle('active');
         }
     </script>
