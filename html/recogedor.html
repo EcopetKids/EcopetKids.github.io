@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoPet - Recogedor</title>
+    <style>
+        /* --- ESTILOS GENERALES Y CONTENEDOR --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background: #e8f5e9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 450px;
+            height: 100vh;
+            max-height: 800px;
+            background: #81c784;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- BARRA DE ESTADO --- */
+        .status-bar {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .vidas { color: #ff5252; }
+        .monedas { color: #fbc02d; }
+        .tiempo { color: #00796b; }
+
+        /* --- PISTA DE JUEGO --- */
+        .game-field {
+            flex: 1;
+            position: relative;
+            background: #555; /* Color del asfalto */
+            overflow: hidden;
+        }
+
+        /* Líneas de la carretera (Efecto de movimiento) */
+        .road-lines {
+            position: absolute;
+            width: 8px;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(to bottom, #fff 0%, #fff 50%, transparent 50%, transparent 100%);
+            background-size: 100% 60px;
+            animation: moveRoad 1s linear infinite;
+        }
+
+        @keyframes moveRoad {
+            0% { background-position-y: 0px; }
+            100% { background-position-y: 60px; }
+        }
+
+        /* --- JUGADOR (CARRITO ECOPET) --- */
+        .carrito {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            width: 70px;
+            height: 90px;
+            transform: translateX(-50%);
+            background: #4caf50;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: left 0.15s ease-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            border: 3px solid #2e7d32;
+        }
+        /* Decoración ruedas del carrito */
+        .carrito::before, .carrito::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 20px;
+            background: #222;
+            border-radius: 3px;
+        }
+        .carrito::before { left: -10px; top: 15px; box-shadow: 0 45px 0 #222; }
+        .carrito::after { right: -10px; top: 15px; box-shadow: 0 45px 0 #222; }
+
+        /* --- OBSTÁCULOS Y BASURA --- */
+        .spawn-item {
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            top: -50px;
+            z-index: 5;
+        }
+
+        /* --- POPUPS DE NOTIFICACIÓN --- */
+        .popup {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: white;
+            z-index: 20;
+            animation: popEffect 0.4s ease-out;
+        }
+        .correct { background: #4caf50; }
+        .incorrect { background: #f44336; }
+
+        @keyframes popEffect {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        /* --- CONTROLES MÓVILES (ZONA INFERIOR) --- */
+        .controls {
+            display: flex;
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            justify-content: space-around;
+            gap: 15px;
+            z-index: 10;
+        }
+        .btn-control {
+            flex: 1;
+            padding: 15px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: #4ecdc4;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #3bb3aa;
+        }
+        .btn-control:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        /* --- PANTALLAS DE FIN DE JUEGO / VICTORIA --- */
+        .character-zone {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(232, 245, 233, 0.95);
+            z-index: 30;
+            padding: 20px;
+            animation: popIn 0.5s ease forwards;
+        }
+        .character-zone.show-win { display: flex; }
+        
+        .win-bubble {
+            background: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            border: 3px solid #4CAF50;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .resumen-stats {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        .ecopet-avatar-win {
+            max-width: 140px;
+            height: auto;
+            margin-bottom: 25px;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Botón bonito para volver al menú */
+        .btn-ready-win {
+            display: inline-block;
+            background: linear-gradient(135deg, #4ecdc4, #4caf50);
+            color: white;
+            padding: 14px 35px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+        }
+        .btn-ready-win:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.6);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-container">
+        <div class="status-bar">
+            <div class="vidas" id="contenedor-vidas">❤️ ❤️ ❤️</div>
+            <div class="tiempo" id="contenedor-tiempo">⏱️ 0s</div>
+            <div class="monedas">🪙 <span id="puntos">0</span></div>
+        </div>
+
+        <div class="game-field" id="pista">
+            <div class="road-lines" id="lineas-pista"></div>
+            
+            <div class="carrito" id="player-car">🐶🛒</div>
+
+            <div class="popup correct" id="pop-bien" style="display: none;">¡Buen reciclaje! 🎉 +10</div>
+            <div class="popup incorrect" id="pop-mal" style="display: none;">¡Piedra! 💔 -1 Vida</div>
+        </div>
+
+        <div class="character-zone" id="end-screen">
+            <div class="win-bubble" id="mensaje-final">¡Misión de limpieza terminada! 🐾</div>
+            <div class="resumen-stats" id="resumen-stats">
+                </div>
+            <img src="../imagenes/cachorrowin.png" alt="EcoPet" class="ecopet-avatar-win">
+            <a href="menu.html" class="btn-ready-win">VOLVER AL MENÚ</a>
+        </div>
+
+        <div class="controls">
+            <button class="btn-control" onclick="mover(-1)">◀ Izquierda</button>
+            <button class="btn-control" onclick="mover(1)">Derecha ▶</button>
+        </div>
+    </div>
+
+    <script>
+        // --- ELEMENTOS HTML ---
+        const car = document.getElementById('player-car');
+        const pista = document.getElementById('pista');
+        const lineasPista = document.getElementById('lineas-pista');
+        const puntosTxt = document.getElementById('puntos');
+        const contenedorVidas = document.getElementById('contenedor-vidas');
+        const contenedorTiempo = document.getElementById('contenedor-tiempo');
+        const endScreen = document.getElementById('end-screen');
+        const mensajeFinal = document.getElementById('mensaje-final');
+        const resumenStats = document.getElementById('resumen-stats');
+
+        // --- CONFIGURACIÓN DE AUDIO ---
+        const audioCorrecto = new Audio('../music/Correcto.mp3');
+        const audioMal = new Audio('../music/Mal.mp3');
+        const audioCelebracion = new Audio('../music/celebración.mp3');
+
+        // --- ATRIBUTOS DE JUEGO ---
+        let puntos = 0;
+        let vidas = 3;
+        let tiempo = 0;
+        let juegoActivo = true;
+        
+        let carPos = 50; // Posición horizontal del carro en porcentaje (centro)
+        let velocidadElementos = 4; // Velocidad de caída inicial
+        let intervaloSpawn = 1200; // Cada cuántos ms cae algo
+        let listaElementos = [
+            { tipo: 'basura', icono: '🍾' },
+            { tipo: 'basura', icono: '🛍️' },
+            { tipo: 'basura', icono: '🧴' },
+            { tipo: 'basura', icono: '🥤' },
+            { tipo: 'piedra', icono: '🪨' },
+            { tipo: 'piedra', icono: '🪨' } // Más peso a las piedras para balancear
+        ];
+
+        // --- CRONÓMETRO ---
+        const cronometro = setInterval(() => {
+            if (!juegoActivo) return;
+            tiempo++;
+            contenedorTiempo.innerText = `⏱️ ${tiempo}s`;
+
+            // Cada 10 segundos, aumenta la velocidad y el ritmo de la carretera
+            if (tiempo % 10 === 0) {
+                velocidadElementos += 1.5;
+                lineasPista.style.animationDuration = `${1 / (velocidadElementos/4)}s`;
+            }
+        }, 1000);
+
+        // --- MOVIMIENTO DEL JUGADOR ---
+        function mover(direccion) {
+            if (!juegoActivo) return;
+            // Limitar el movimiento entre 15% y 85% de la anchura de la pista
+            carPos += direccion * 25; 
+            if (carPos < 15) carPos = 15;
+            if (carPos > 85) carPos = 85;
+            car.style.left = `${carPos}%`;
+        }
+
+        // Soporte teclado para PC (Flechas Izquierda / Derecha)
+        window.addEventListener('keydown', (e) => {
+            if (e.key === "ArrowLeft") mover(-1);
+            if (e.key === "ArrowRight") mover(1);
+        });
+
+        // --- MECÁNICA DE GENERACIÓN (SPAWN) ---
+        function crearElemento() {
+            if (!juegoActivo) return;
+
+            const itemConfig = listaElementos[Math.floor(Math.random() * listaElementos.length)];
+            const item = document.createElement('div');
+            item.className = 'spawn-item';
+            item.innerText = itemConfig.icono;
+            item.dataset.tipo = itemConfig.tipo;
+
+            // Carriles distribuidos de manera aleatoria (20%, 50%, 80%)
+            const carriles = [20, 50, 80];
+            const carrilAleatorio = carriles[Math.floor(Math.random() * carriles.length)];
+            item.style.left = `${carrilAleatorio}%`;
+            item.style.top = `-50px`;
+
+            pista.appendChild(item);
+
+            let posicionY = -50;
+            
+            function caida() {
+                if (!juegoActivo) {
+                    item.remove();
+                    return;
+                }
+
+                posicionY += velocidadElementos;
+                item.style.top = `${posicionY}px`;
+
+                // Verificar colisión cuando esté a la altura del coche (aprox entre 580px y 680px según pantalla)
+                const pistaHeight = pista.offsetHeight;
+                if (posicionY > pistaHeight - 160 && posicionY < pistaHeight - 40) {
+                    // Si están en el mismo carril (aproximado)
+                    if (Math.abs(parseInt(item.style.left) - carPos) < 15) {
+                        procesarImpacto(item.dataset.tipo);
+                        item.remove();
+                        return;
+                    }
+                }
+
+                // Si sale de la pantalla limpia el HTML
+                if (posicionY > pistaHeight) {
+                    item.remove();
+                } else {
+                    requestAnimationFrame(caida);
+                }
+            }
+            requestAnimationFrame(caida);
+
+            // Programar el siguiente objeto variando por la velocidad
+            setTimeout(crearElemento, Math.max(500, intervaloSpawn - (velocidadElementos * 50)));
+        }
+
+        // --- LOGICA DE IMPACTOS ---
+        function procesarImpacto(tipo) {
+            if (tipo === 'basura') {
+                puntos += 10;
+                puntosTxt.innerText = puntos;
+                audioCorrecto.currentTime = 0;
+                audioCorrecto.play();
+                mostrarPopup('pop-bien');
+            } else if (tipo === 'piedra') {
+                vidas--;
+                actualizarVidas();
+                audioMal.currentTime = 0;
+                audioMal.play();
+                mostrarPopup('pop-mal');
+
+                if (vidas <= 0) {
+                    terminarJuego();
+                }
+            }
+        }
+
+        function actualizarVidas() {
+            let corazones = "";
+            for (let i = 0; i < vidas; i++) { corazones += "❤️ "; }
+            if (vidas === 0) corazones = "💀 Fin del viaje";
+            contenedorVidas.innerText = corazones;
+        }
+
+        function mostrarPopup(id) {
+            const pop = document.getElementById(id);
+            pop.style.display = 'block';
+            setTimeout(() => { pop.style.display = 'none'; }, 600);
+        }
+
+        // --- FINALIZAR JUEGO ---
+        function terminarJuego() {
+            juegoActivo = false;
+            clearInterval(cronometro);
+            
+            // Sonido de victoria/celebración al finalizar el recorrido
+            audioCelebracion.currentTime = 0;
+            audioCelebracion.play();
+
+            // Mensajes adaptativos según el puntaje
+            if (vidas > 0) {
+                mensajeFinal.innerText = "¡Excelente conductor ecológico! 🌟";
+            } else {
+                mensajeFinal.innerText = "¡Buen intento! Limpiaste la ruta. 🐾";
+            }
+
+            // Mostrar estadísticas de Puntos y Tiempo
+            resumenStats.innerHTML = `
+                <strong>Puntuación final:</strong> 🪙 ${puntos} Puntos <br>
+                <strong>Tiempo manejando:</strong> ⏱️ ${tiempo} Segundos
+            `;
+
+            // Desplegar pantalla de fin
+            endScreen.classList.add('show-win');
+        }
+
+        // Iniciar ciclo de juego
+        setTimeout(crearElemento, 1000);
+    </script>
+</body>
+
+</html>
