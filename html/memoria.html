@@ -41,6 +41,12 @@
         let moves = 0;
         let matchesFound = 0;
 
+        // --- CONFIGURACIÓN DE AUDIO ---
+        // Usamos rutas relativas para que funcione tanto en tu PC como en GitHub Pages
+        const audioCorrecto = new Audio('../music/Correcto.mp3');
+        const audioMal = new Audio('../music/Mal.mp3');
+        const audioCelebracion = new Audio('../music/celebración.mp3');
+
         function createBoard() {
             const grid = document.getElementById('memory-grid');
             grid.innerHTML = '';
@@ -57,6 +63,8 @@
 
             cardsDeck.sort(() => Math.random() - 0.5);
 
+            lockBoard = true;
+
             cardsDeck.forEach(item => {
                 const card = document.createElement('div');
                 card.classList.add('memory-card');
@@ -70,6 +78,20 @@
                 card.addEventListener('click', flipCard);
                 grid.appendChild(card);
             });
+
+            setTimeout(() => {
+                const allCards = document.querySelectorAll('.memory-card');
+                allCards.forEach(card => card.classList.add('flip'));
+            }, 100);
+
+            setTimeout(() => {
+                const allCards = document.querySelectorAll('.memory-card');
+                allCards.forEach(card => card.classList.remove('flip'));
+
+                setTimeout(() => {
+                    lockBoard = false;
+                }, 400);
+            }, 3000);
         }
 
         function flipCard() {
@@ -101,6 +123,13 @@
             secondCard.removeEventListener('click', flipCard);
 
             matchesFound++;
+
+            // Si hace un match correcto, pero AÚN NO ha ganado el juego por completo
+            if (matchesFound < items.length) {
+                audioCorrecto.currentTime = 0; // Reinicia el audio por si hace clics rápidos
+                audioCorrecto.play();
+            }
+
             if (matchesFound === items.length) {
                 setTimeout(showVictory, 500);
             }
@@ -110,6 +139,10 @@
 
         function unflipCards() {
             lockBoard = true;
+
+            // Reproduce el sonido de error inmediatamente al fallar
+            audioMal.currentTime = 0;
+            audioMal.play();
 
             setTimeout(() => {
                 firstCard.classList.remove('flip');
@@ -125,6 +158,10 @@
         }
 
         function showVictory() {
+            // Reproduce la música de celebración al ganar
+            audioCelebracion.currentTime = 0;
+            audioCelebracion.play();
+
             document.getElementById('win-zone').classList.add('show-win');
             document.getElementById('memory-grid').style.opacity = '0.15';
 
@@ -135,6 +172,11 @@
         }
 
         function resetGame() {
+            // Pausamos los audios si se reinicia a mitad de juego para que no se traslapen
+            audioCorrecto.pause();
+            audioMal.pause();
+            audioCelebracion.pause();
+
             resetBoardVariables();
             createBoard();
         }
