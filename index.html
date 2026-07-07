@@ -5,10 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EcoPet - Cargando Aventura...</title>
     <link rel="stylesheet" href="index.css">
+    <style>
+        /* Estilos para que el contenedor del juego ocupe el 100% de la pantalla */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        /* El marco donde se verán tus múltiples páginas */
+        #game-viewport {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: none; /* Oculto mientras carga */
+        }
+    </style>
 </head>
 <body>
 
-    <div class="loader-container">
+    <div id="loader-screen" class="loader-container">
         <h1 class="loader-title">EcoPet</h1>
 
         <div class="character-loading">
@@ -22,22 +39,41 @@
         </div>
     </div>
 
+    <iframe id="game-viewport" src="html/inicio.html"></iframe>
+
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             const progressFill = document.getElementById('progress-fill');
+            const loaderScreen = document.getElementById('loader-screen');
+            const gameViewport = document.getElementById('game-viewport');
             
-            // Animación manual de la barra de progreso para asegurar el ritmo visual
+            // --- MÚSICA DE FONDO EN ETERNO BUCLE ---
+            const musicaFondo = new Audio('music/fondo.mp3');
+            musicaFondo.loop = true; 
+            musicaFondo.volume = 0.4; 
+
+            // Intentar reproducir automáticamente
+            musicaFondo.play().catch(error => {
+                // Si el navegador bloquea el autoplay, se activa al primer clic en la carga
+                document.addEventListener('click', () => {
+                    musicaFondo.play();
+                }, { once: true });
+            });
+
+            // Animación de la barra de progreso
             let width = 0;
             const interval = setInterval(() => {
                 if (width >= 100) {
                     clearInterval(interval);
-                    // Redirecciona automáticamente tras completarse la barra (aprox 2.5 segundos)
-                    window.location.href = "html/inicio.html";
+                    
+                    // Al terminar la carga, ocultamos el cargador y revelamos el marco del juego
+                    loaderScreen.style.display = 'none';
+                    gameViewport.style.display = 'block';
                 } else {
-                    width += 2; // Velocidad del llenado
+                    width += 2; 
                     progressFill.style.width = width + '%';
                 }
-            }, 40); // 40ms * 50 pasos = 2000ms (2 segundos de carga perfecta)
+            }, 40); 
         });
     </script>
 </body>
