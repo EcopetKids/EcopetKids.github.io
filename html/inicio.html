@@ -14,7 +14,6 @@
 
         <div class="main-content">
             <div class="character-zone">
-                <!-- Se eliminó el estilo inline para que no bloquee el diseño responsivo -->
                 <img src="../imagenes/cachorrofeli.png" alt="EcoPet" class="ecopet-avatar">
                 <div class="bin-preview"></div>
             </div>
@@ -23,8 +22,24 @@
             <p>¡Hola! Soy Ecopet, listo para ayudarte a cuidar el planeta.</p>
         </div>
 
-        <a href="login.html" class="btn-jugar">JUGAR</a>
+        <button id="btn-jugar-inicio" class="btn-jugar">JUGAR</button>
     </div>
+
+    <script>
+        document.getElementById('btn-jugar-inicio').addEventListener('click', function() {
+            // Buscamos el contenedor padre (index.html) que tiene la música viva
+            const iframe = window.parent.document.getElementById('game-viewport');
+            
+            if (iframe) {
+                // Cambiamos la página internamente. Como el login está en la misma carpeta 'html', 
+                // para el index.html principal la ruta correcta es: html/login.html
+                iframe.src = 'html/login.html'; 
+            } else {
+                // Si por alguna razón pruebas esta página suelta, funciona normal
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
 </body>
 
 </html>
