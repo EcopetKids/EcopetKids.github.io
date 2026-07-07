@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoPet - Vestidor</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: #e8f5e9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 450px;
+            background: white;
+            border-radius: 25px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            position: relative;
+            text-align: center;
+        }
+
+        .back-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.8rem;
+            text-decoration: none;
+            background: #4caf50;
+            padding: 5px 10px;
+            border-radius: 50%;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            margin-top: 10px;
+        }
+
+        /* Zona del Avatar animado */
+        .preview-zone {
+            background: #f1f8e9;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px dashed #a5d6a7;
+            min-height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ecopet-avatar {
+            max-width: 160px;
+            height: auto;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        /* Clase de animación al cambiar ropa */
+        .equip-change {
+            transform: scale(0.4) rotate(-10deg);
+            opacity: 0;
+        }
+
+        /* Rejilla de Inventario */
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .inventory-item {
+            background: #f5f5f5;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            opacity: 0.5; /* Opaco si no está comprado */
+            pointer-events: none;
+        }
+
+        .inventory-item.unlocked {
+            opacity: 1;
+            pointer-events: auto;
+            background: #fff;
+            border-color: #81c784;
+        }
+
+        .inventory-item.unlocked:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .inventory-item.active {
+            border-color: #2e7d32;
+            background: #e8f5e9;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.4);
+        }
+
+        .inventory-item.active::after {
+            content: "✅";
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 0.9rem;
+        }
+
+        .item-icon {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .item-name {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .empty-msg {
+            grid-column: span 3;
+            color: #888;
+            font-style: italic;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <a href="menu.html" class="back-home">🏠</a>
+        
+        <h2>VESTIDOR ECOPET</h2>
+
+        <!-- Vista previa con animación -->
+        <div class="preview-zone">
+            <img src="../imagenes/perrito.png" alt="EcoPet" id="pet-preview" class="ecopet-avatar">
+        </div>
+
+        <h3>Tu Inventario</h3>
+        <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">Selecciona un artículo para equiparlo</p>
+
+        <!-- Cuadrícula de ropa disponible -->
+        <div class="inventory-grid">
+            <!-- Desequipado -->
+            <div class="inventory-grid-base-item unlocked active" id="item-base" onclick="equiparObjeto('base')">
+                <div class="item-icon">🐶</div>
+                <div class="item-name">Sin Ropa</div>
+            </div>
+
+            <div class="inventory-item" id="inv-collar" onclick="equiparObjeto('collar')">
+                <div class="item-icon">📿</div>
+                <div class="item-name">Collar Eco</div>
+            </div>
+
+            <div class="inventory-item" id="inv-gorra" onclick="equiparObjeto('gorra')">
+                <div class="item-icon">🧢</div>
+                <div class="item-name">Gorra Azul</div>
+            </div>
+
+            <div class="inventory-item" id="inv-lentes" onclick="equiparObjeto('lentes')">
+                <div class="item-icon">🕶️</div>
+                <div class="item-name">Lentes Vidrio</div>
+            </div>
+
+            <div class="inventory-item" id="inv-mochila" onclick="equiparObjeto('mochila')">
+                <div class="item-icon">🎒</div>
+                <div class="item-name">Mochi Solar</div>
+            </div>
+
+            <div class="inventory-item" id="inv-botas" onclick="equiparObjeto('botas')">
+                <div class="item-icon">🥾</div>
+                <div class="item-name">Botas Llantas</div>
+            </div>
+
+            <div class="inventory-item" id="inv-panuleta" onclick="equiparObjeto('panuleta')">
+                <div class="item-icon">🧣</div>
+                <div class="item-name">Pañoleta</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mapeo exacto de IDs a nombres de imágenes requeridos
+        const imagenesPerro = {
+            'base': '../imagenes/cachorrowin.png',
+            'collar': '../imagenes/cachorrocollar.png',
+            'gorra': '../imagenes/cachorrogorrita.png',
+            'lentes': '../imagenes/cachorrolentes.png',
+            'mochila': '../imagenes/cachorromochila.png',
+            'botas': '../imagenes/cachorrobotas.png',
+            'panuleta': '../imagenes/cachorrobufanda.png'
+        };
+
+        const imgElement = document.getElementById('pet-preview');
+
+        function cargarInventario() {
+            // Verificar qué objetos han sido comprados en la tienda
+            const compras = JSON.parse(localStorage.getItem('ecopet_compras')) || {};
+            
+            // Activar visualmente en el inventario las tarjetas de los objetos comprados
+            for (const clave in compras) {
+                if (compras[clave] === true) {
+                    const elemento = document.getElementById(`inv-${clave}`);
+                    if (elemento) elemento.classList.add('unlocked');
+                }
+            }
+
+            // Cargar qué tiene puesto actualmente
+            const equipadoActual = localStorage.getItem('ecopet_equipado') || 'base';
+            actualizarUIEquipado(equipadoActual);
+            imgElement.src = imagenesPerro[equipadoActual] || imagenesPerro['base'];
+        }
+
+        function equiparObjeto(idObjeto) {
+            const equipadoActual = localStorage.getItem('ecopet_equipado') || 'base';
+            if (equipadoActual === idObjeto) return; // Ya está puesto
+
+            // Ejecutar animación de escala y desaparición
+            imgElement.classList.add('equip-change');
+
+            setTimeout(() => {
+                // Cambiar el origen de la imagen a mitad de la animación
+                imgElement.src = imagenesPerro[idObjeto];
+                localStorage.setItem('ecopet_equipado', idObjeto);
+                actualizarUIEquipado(idObjeto);
+                
+                // Deshacer la desaparición para que aparezca con el nuevo traje
+                imgElement.classList.remove('equip-change');
+            }, 300);
+        }
+
+        function actualizarUIEquipado(idObjeto) {
+            // Remover la clase activa de todos los recuadros
+            document.querySelectorAll('.inventory-item, .inventory-grid-base-item').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Añadirle la clase al seleccionado
+            if (idObjeto === 'base') {
+                document.getElementById('item-base').classList.add('active');
+            } else {
+                const elemento = document.getElementById(`inv-${idObjeto}`);
+                if (elemento) elemento.classList.add('active');
+            }
+        }
+
+        // Cargar todo al iniciar la página
+        window.onload = cargarInventario;
+    </script>
+</body>
+</html>
